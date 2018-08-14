@@ -192,6 +192,7 @@
     <ClInclude Include="scheduleScene.h" />
     <ClInclude Include="singletonBase.h" />
     <ClInclude Include="soundManager.h" />
+    <ClInclude Include="startScene.h" />
     <ClInclude Include="status.h" />
     <ClInclude Include="statusManager.h" />
     <ClInclude Include="stdafx.h" />
@@ -246,6 +247,7 @@
     <ClCompile Include="sceneManager.cpp" />
     <ClCompile Include="scheduleScene.cpp" />
     <ClCompile Include="soundManager.cpp" />
+    <ClCompile Include="startScene.cpp" />
     <ClCompile Include="status.cpp" />
     <ClCompile Include="statusManager.cpp" />
     <ClCompile Include="stdafx.cpp">

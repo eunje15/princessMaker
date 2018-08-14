@@ -246,6 +246,9 @@
     <ClInclude Include="eastBattleScene.h">
       <Filter>playGround\battle</Filter>
     </ClInclude>
+    <ClInclude Include="startScene.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -400,6 +403,9 @@
     </ClCompile>
     <ClCompile Include="eastBattleScene.cpp">
       <Filter>playGround\battle</Filter>
+    </ClCompile>
+    <ClCompile Include="startScene.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

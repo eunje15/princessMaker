@@ -27,6 +27,7 @@ HRESULT playGround::init(void)
 	SCENEMANAGER->addScene("데이터입력", new dataInput);
 	SCENEMANAGER->addScene("프롤로그", new prologueDialog);
 	SCENEMANAGER->addScene("공주씬", new princessScene);
+	SCENEMANAGER->addScene("스타트씬", new startScene);
 	
 	SCENEMANAGER->changeScene("공주씬");
 	_str = TXTDATA->txtLoadCsv("dialog/별자리능력치.csv", "처녀자리");

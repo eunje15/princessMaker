@@ -2,13 +2,14 @@
 #include "gameNode.h"
 #include "data.h"
 
-enum SAVELOAD_TYPE {SAVELOAD_FIN, SAVELOAD_SAVE, SAVELOAD_LOAD, SAVELOAD_NONE};
-
 class princess;
 class item;
 
 class saveLoadScene : public gameNode
 {
+private:
+	enum SAVELOAD_TYPE { SAVELOAD_FIN, SAVELOAD_SAVE, SAVELOAD_LOAD, SAVELOAD_NONE };
+
 private:
 	princess* _princess;
 	tagImg _npc;
