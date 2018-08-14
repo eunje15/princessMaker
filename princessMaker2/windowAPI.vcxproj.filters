@@ -1,0 +1,405 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="소스 파일">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="헤더 파일">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="리소스 파일">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="2DFramework">
+      <UniqueIdentifier>{2097f7dd-466c-43ba-bf64-382891d85213}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2DFramework\singletonBase">
+      <UniqueIdentifier>{27f5bfd9-a1f0-43c1-97da-f30c056f6397}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="playGround">
+      <UniqueIdentifier>{7d41c859-4579-4624-b673-c0e05586ad1f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2DFramework\Manager">
+      <UniqueIdentifier>{9bb540ca-4b5e-4022-9141-2af7c425e122}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2DFramework\utils">
+      <UniqueIdentifier>{c21c4c8a-1155-499d-b121-68b14fe4a82c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2DFramework\image">
+      <UniqueIdentifier>{0ea639ba-92ce-4c57-a4a7-e0cc0b1731d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2DFramework\progressBar">
+      <UniqueIdentifier>{7f62cdff-c24e-412b-abb0-097542fb2ea8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2DFramework\txtData">
+      <UniqueIdentifier>{fb2550d5-b60d-4281-862b-1d8329019df9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2DFramework\timer">
+      <UniqueIdentifier>{e9484528-0487-4586-a201-bc9cc283c075}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2DFramework\animation">
+      <UniqueIdentifier>{1ffd2ec9-ea41-4955-b856-37cf78b3c082}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2DFramework\effect">
+      <UniqueIdentifier>{e401df2d-a36e-4add-9dcb-7b125fb6272a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2DFramework\button">
+      <UniqueIdentifier>{f7d51706-c5d3-48b6-820a-231ce8fb495f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="playGround\prologue">
+      <UniqueIdentifier>{6fbbff84-02f6-496a-a526-664aa7b6c299}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="playGround\princess">
+      <UniqueIdentifier>{f35be7b3-e0ed-49e0-9879-0cba18e30caa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="playGround\npc">
+      <UniqueIdentifier>{0f0a27d6-189e-45cb-8a40-b9a66bcc1b0c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="playGround\item">
+      <UniqueIdentifier>{3b06fc4a-73ba-4fec-acd2-0a16035df31f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="playGround\store">
+      <UniqueIdentifier>{02d944a1-ab08-41b5-8646-9cfd5f99181d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="playGround\scene">
+      <UniqueIdentifier>{7ac0d17a-e064-4549-a288-e06d42a3cef2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="playGround\stat">
+      <UniqueIdentifier>{a7a83e5d-676b-49b2-9ba0-bd80ce14d0ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="playGround\maptool">
+      <UniqueIdentifier>{7482ca49-0572-440e-a6fd-14d50d293967}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="playGround\battle">
+      <UniqueIdentifier>{c987ab54-b958-46eb-9597-47bd75c9dc79}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="commonMacroFunction.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="singletonBase.h">
+      <Filter>2DFramework\singletonBase</Filter>
+    </ClInclude>
+    <ClInclude Include="randomFunction.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="gameNode.h">
+      <Filter>2DFramework</Filter>
+    </ClInclude>
+    <ClInclude Include="playGround.h">
+      <Filter>playGround</Filter>
+    </ClInclude>
+    <ClInclude Include="keyManager.h">
+      <Filter>2DFramework\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="utils.h">
+      <Filter>2DFramework\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="image.h">
+      <Filter>2DFramework\image</Filter>
+    </ClInclude>
+    <ClInclude Include="imageManager.h">
+      <Filter>2DFramework\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="progressBar.h">
+      <Filter>2DFramework\progressBar</Filter>
+    </ClInclude>
+    <ClInclude Include="txtData.h">
+      <Filter>2DFramework\txtData</Filter>
+    </ClInclude>
+    <ClInclude Include="timer.h">
+      <Filter>2DFramework\timer</Filter>
+    </ClInclude>
+    <ClInclude Include="timeManager.h">
+      <Filter>2DFramework\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="soundManager.h">
+      <Filter>2DFramework\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="animation.h">
+      <Filter>2DFramework\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="effect.h">
+      <Filter>2DFramework\effect</Filter>
+    </ClInclude>
+    <ClInclude Include="effectManager.h">
+      <Filter>2DFramework\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="sceneManager.h">
+      <Filter>2DFramework\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="button.h">
+      <Filter>2DFramework\button</Filter>
+    </ClInclude>
+    <ClInclude Include="iniDataManager.h">
+      <Filter>2DFramework\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="keyAniManager.h">
+      <Filter>2DFramework\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="dataInput.h">
+      <Filter>playGround\prologue</Filter>
+    </ClInclude>
+    <ClInclude Include="data.h">
+      <Filter>playGround\prologue</Filter>
+    </ClInclude>
+    <ClInclude Include="princess.h">
+      <Filter>playGround\princess</Filter>
+    </ClInclude>
+    <ClInclude Include="prologueDialog.h">
+      <Filter>playGround\prologue</Filter>
+    </ClInclude>
+    <ClInclude Include="dialogManager.h">
+      <Filter>2DFramework\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="princessScene.h">
+      <Filter>playGround\princess</Filter>
+    </ClInclude>
+    <ClInclude Include="cube.h">
+      <Filter>playGround\npc</Filter>
+    </ClInclude>
+    <ClInclude Include="item.h">
+      <Filter>playGround\item</Filter>
+    </ClInclude>
+    <ClInclude Include="weaponStore.h">
+      <Filter>playGround\store</Filter>
+    </ClInclude>
+    <ClInclude Include="clothesStore.h">
+      <Filter>playGround\store</Filter>
+    </ClInclude>
+    <ClInclude Include="cookStore.h">
+      <Filter>playGround\store</Filter>
+    </ClInclude>
+    <ClInclude Include="goodsStore.h">
+      <Filter>playGround\store</Filter>
+    </ClInclude>
+    <ClInclude Include="hospital.h">
+      <Filter>playGround\store</Filter>
+    </ClInclude>
+    <ClInclude Include="church.h">
+      <Filter>playGround\store</Filter>
+    </ClInclude>
+    <ClInclude Include="castleScene.h">
+      <Filter>playGround\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="inventoryScene.h">
+      <Filter>playGround\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="itemManager.h">
+      <Filter>playGround\item</Filter>
+    </ClInclude>
+    <ClInclude Include="saveLoadScene.h">
+      <Filter>playGround\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="scheduleScene.h">
+      <Filter>playGround\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="status.h">
+      <Filter>playGround\stat</Filter>
+    </ClInclude>
+    <ClInclude Include="statusManager.h">
+      <Filter>playGround\stat</Filter>
+    </ClInclude>
+    <ClInclude Include="workStatus.h">
+      <Filter>playGround\stat</Filter>
+    </ClInclude>
+    <ClInclude Include="fightStatus.h">
+      <Filter>playGround\stat</Filter>
+    </ClInclude>
+    <ClInclude Include="educationScene.h">
+      <Filter>playGround\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="relaxStatus.h">
+      <Filter>playGround\stat</Filter>
+    </ClInclude>
+    <ClInclude Include="testClass.h">
+      <Filter>playGround\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="partTimeScene.h">
+      <Filter>playGround\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="dadTalkScene.h">
+      <Filter>playGround\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="tileNode.h">
+      <Filter>playGround\maptool</Filter>
+    </ClInclude>
+    <ClInclude Include="mapTool.h">
+      <Filter>playGround\maptool</Filter>
+    </ClInclude>
+    <ClInclude Include="relaxScene.h">
+      <Filter>playGround\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="eastBattleScene.h">
+      <Filter>playGround\battle</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="windowAPI.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="gameNode.cpp">
+      <Filter>2DFramework</Filter>
+    </ClCompile>
+    <ClCompile Include="playGround.cpp">
+      <Filter>playGround</Filter>
+    </ClCompile>
+    <ClCompile Include="keyManager.cpp">
+      <Filter>2DFramework\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="utils.cpp">
+      <Filter>2DFramework\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="image.cpp">
+      <Filter>2DFramework\image</Filter>
+    </ClCompile>
+    <ClCompile Include="imageManager.cpp">
+      <Filter>2DFramework\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="progressBar.cpp">
+      <Filter>2DFramework\progressBar</Filter>
+    </ClCompile>
+    <ClCompile Include="txtData.cpp">
+      <Filter>2DFramework\txtData</Filter>
+    </ClCompile>
+    <ClCompile Include="timer.cpp">
+      <Filter>2DFramework\timer</Filter>
+    </ClCompile>
+    <ClCompile Include="timeManager.cpp">
+      <Filter>2DFramework\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="soundManager.cpp">
+      <Filter>2DFramework\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="animation.cpp">
+      <Filter>2DFramework\animation</Filter>
+    </ClCompile>
+    <ClCompile Include="effect.cpp">
+      <Filter>2DFramework\effect</Filter>
+    </ClCompile>
+    <ClCompile Include="effectManager.cpp">
+      <Filter>2DFramework\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="sceneManager.cpp">
+      <Filter>2DFramework\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="button.cpp">
+      <Filter>2DFramework\button</Filter>
+    </ClCompile>
+    <ClCompile Include="iniDataManager.cpp">
+      <Filter>2DFramework\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="keyAniManager.cpp">
+      <Filter>2DFramework\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="dataInput.cpp">
+      <Filter>playGround\prologue</Filter>
+    </ClCompile>
+    <ClCompile Include="playGround_Image.cpp">
+      <Filter>playGround</Filter>
+    </ClCompile>
+    <ClCompile Include="princess.cpp">
+      <Filter>playGround\princess</Filter>
+    </ClCompile>
+    <ClCompile Include="prologueDialog.cpp">
+      <Filter>playGround\prologue</Filter>
+    </ClCompile>
+    <ClCompile Include="dialogManager.cpp">
+      <Filter>2DFramework\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="princessScene.cpp">
+      <Filter>playGround\princess</Filter>
+    </ClCompile>
+    <ClCompile Include="cube.cpp">
+      <Filter>playGround\npc</Filter>
+    </ClCompile>
+    <ClCompile Include="item.cpp">
+      <Filter>playGround\item</Filter>
+    </ClCompile>
+    <ClCompile Include="weaponStore.cpp">
+      <Filter>playGround\store</Filter>
+    </ClCompile>
+    <ClCompile Include="clothesStore.cpp">
+      <Filter>playGround\store</Filter>
+    </ClCompile>
+    <ClCompile Include="cookStore.cpp">
+      <Filter>playGround\store</Filter>
+    </ClCompile>
+    <ClCompile Include="goodsStore.cpp">
+      <Filter>playGround\store</Filter>
+    </ClCompile>
+    <ClCompile Include="hospital.cpp">
+      <Filter>playGround\store</Filter>
+    </ClCompile>
+    <ClCompile Include="church.cpp">
+      <Filter>playGround\store</Filter>
+    </ClCompile>
+    <ClCompile Include="castleScene.cpp">
+      <Filter>playGround\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="inventoryScene.cpp">
+      <Filter>playGround\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="itemManager.cpp">
+      <Filter>playGround\item</Filter>
+    </ClCompile>
+    <ClCompile Include="saveLoadScene.cpp">
+      <Filter>playGround\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="scheduleScene.cpp">
+      <Filter>playGround\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="status.cpp">
+      <Filter>playGround\stat</Filter>
+    </ClCompile>
+    <ClCompile Include="statusManager.cpp">
+      <Filter>playGround\stat</Filter>
+    </ClCompile>
+    <ClCompile Include="workStatus.cpp">
+      <Filter>playGround\stat</Filter>
+    </ClCompile>
+    <ClCompile Include="fightStatus.cpp">
+      <Filter>playGround\stat</Filter>
+    </ClCompile>
+    <ClCompile Include="educationScene.cpp">
+      <Filter>playGround\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="relaxStatus.cpp">
+      <Filter>playGround\stat</Filter>
+    </ClCompile>
+    <ClCompile Include="testClass.cpp">
+      <Filter>playGround\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="partTimeScene.cpp">
+      <Filter>playGround\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="dadTalkScene.cpp">
+      <Filter>playGround\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="mapTool.cpp">
+      <Filter>playGround\maptool</Filter>
+    </ClCompile>
+    <ClCompile Include="relaxScene.cpp">
+      <Filter>playGround\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="eastBattleScene.cpp">
+      <Filter>playGround\battle</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

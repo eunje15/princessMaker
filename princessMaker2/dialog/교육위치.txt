@@ -1,0 +1,349 @@
+자연과학위치
+_back->render(DC, 0, 0);
+	for (int i = 0; i < _friends.size(); i++)
+	{
+		if (i == 0)
+			_friends[i]->frameRender(DC, 19, 42, _friends[i]->getFrameX(), 0);
+		else
+			_friends[i]->frameRender(DC, 60 + i * 80, 42, _friends[i]->getFrameX(), 0);
+	}
+	_princess->frameRender(DC, 300, 42, _frameX, 0);
+
+switch (RND->getInt(3))
+	{
+		case 0:
+			_type = EDU_STUDY;
+			_startF = 0, _endF = 2;
+			_typeStr = "공부중";
+		break;
+		case 1:
+			_type = EDU_SLEEP;
+			_startF = 3, _endF = 4;
+			_typeStr = "조는중";
+		break;
+		case 2:
+			_type = EDU_NOSTUDY;
+			_startF = 5, _endF = 6;
+			_typeStr = "농땡이";
+		break;
+	}
+	_day = _success = _count = _frameCount = 0;
+	_gold = 10;
+	_dayOfWeek = MON;
+	_frameX = _startF;
+
+
+
+시문위치
+
+_back->render(DC, 0, 0);
+	for (int i = 0; i < _friends.size(); i++)
+	{
+		if (i == 0)
+			_friends[i]->frameRender(DC, 19, 42, _friends[i]->getFrameX(), 0);
+		else
+			_friends[i]->frameRender(DC, 60 + i * 80, 42, _friends[i]->getFrameX(), 0);
+	}
+	_princess->frameRender(DC, 300, 42, _frameX, 0);
+	char str[128];
+	sprintf_s(str, "%d %d", _ptMouse.x, _ptMouse.y);
+	TextOut(DC, 700, 500, str, strlen(str));
+
+	sprintf_s(str, "횟수 : %d", _day);
+	TextOut(DC, 600, 500, str, strlen(str));
+	TextOut(DC, 600, 550, _typeStr.c_str(), strlen(_typeStr.c_str()));
+
+
+switch (RND->getInt(3))
+			{
+			case 0:
+				_type = EDU_STUDY;
+				_startF = 0, _endF = 3;
+				_typeStr = "공부중";
+				break;
+			case 1:
+				_type = EDU_SLEEP;
+				_startF = 4, _endF = 7;
+				_typeStr = "조는중";
+				break;
+			case 2:
+				_type = EDU_NOSTUDY;
+				_startF = 8, _endF = 9;
+				_typeStr = "농땡이";
+				break;
+			}
+
+
+
+신학위치
+
+_back->render(DC, 0, 0);
+	for (int i = 0; i < _friends.size(); i++)
+	{
+		if (i == 0)
+			_friends[i]->frameRender(DC, 140, 42, _friends[i]->getFrameX(), 0);
+		else if(i == 3)
+			_friends[i]->frameRender(DC, 350, 42, _friends[i]->getFrameX(), 0);
+		else
+			_friends[i]->frameRender(DC, (i - 1) * 80, 42, _friends[i]->getFrameX(), 0);
+	}
+_princess->frameRender(DC, 260, 42, _frameX, 0);
+
+	switch (RND->getInt(3))
+			{
+			case 0:
+				_type = EDU_STUDY;
+				_startF = 0, _endF = 1;
+				_typeStr = "공부중";
+				break;
+			case 1:
+				_type = EDU_SLEEP;
+				_startF = 2, _endF = 3;
+				_typeStr = "조는중";
+				break;
+			case 2:
+				_type = EDU_NOSTUDY;
+				_startF = 4, _endF = 5;
+				_typeStr = "농땡이";
+				break;
+			}
+
+군사학위치
+
+for (int i = 0; i < _friends.size(); i++)
+	{
+		if (i == 0)
+			_friends[i]->frameRender(DC, 50, 19, _friends[i]->getFrameX(), 0);
+		else
+			_friends[i]->frameRender(DC, 60 + i * 80, 42, _friends[i]->getFrameX(), 0);
+	}
+	_princess->frameRender(DC, 300, 42, _frameX, 0);
+
+switch (RND->getInt(3))
+			{
+			case 0:
+				_type = EDU_STUDY;
+				_startF = 0, _endF = 2;
+				_typeStr = "공부중";
+				break;
+			case 1:
+				_type = EDU_SLEEP;
+				_startF = 3, _endF = 4;
+				_typeStr = "조는중";
+				break;
+			case 2:
+				_type = EDU_NOSTUDY;
+				_startF = 5, _endF = 6;
+				_typeStr = "농땡이";
+				break;
+			}
+
+
+검술위치
+for (int i = 0; i < _friends.size(); i++)
+	{
+		if (i == 0)
+			_friends[i]->frameRender(DC, 175, 10, _friends[i]->getFrameX(), 0);
+		else if(i == 3)
+			_friends[i]->frameRender(DC, 350, 42, _friends[i]->getFrameX(), 0);
+		else
+			_friends[i]->frameRender(DC, (i - 1) * 80, 42, _friends[i]->getFrameX(), 0);
+	}
+	_princess->frameRender(DC, 260, 42, _frameX, 0);
+
+switch (RND->getInt(3))
+			{
+			case 0:
+				_type = EDU_STUDY;
+				_startF = 0, _endF = 3;
+				_typeStr = "공부중";
+				break;
+			case 1:
+				_type = EDU_SLEEP;
+				_startF = 4, _endF = 5;
+				_typeStr = "조는중";
+				break;
+			case 2:
+				_type = EDU_NOSTUDY;
+				_startF = 6, _endF = 7;
+				_typeStr = "농땡이";
+				break;
+			}
+
+
+격투술
+for (int i = 0; i < _friends.size() - 1; i++)
+	{
+		if (i == 0)
+			_friends[i]->frameRender(DC, 175, 42, _friends[i]->getFrameX(), 0);
+		else if(i == 3)
+			_friends[i]->frameRender(DC, 350, 42, _friends[i]->getFrameX(), 0);
+		else
+			_friends[i]->frameRender(DC, (i - 1) * 80, 42, _friends[i]->getFrameX(), 0);
+	}
+	_friends[_friends.size() - 1]->render(DC, 260, 42);
+	_princess->frameRender(DC, 260, 42, _frameX, 0);
+
+
+switch (RND->getInt(3))
+			{
+			case 0:
+				_type = EDU_STUDY;
+				_startF = 0, _endF = 2;
+				_typeStr = "공부중";
+				break;
+			case 1:
+				_type = EDU_SLEEP;
+				_startF = 3, _endF = 4;
+				_typeStr = "조는중";
+				break;
+			case 2:
+				_type = EDU_NOSTUDY;
+				_startF = 5, _endF = 6;
+				_typeStr = "농땡이";
+				break;
+			}
+
+마법위치
+
+_back = IMAGEMANAGER->findImage("마법배경");
+	_friends.push_back(IMAGEMANAGER->findImage("마법선생"));
+	_friends.push_back(IMAGEMANAGER->findImage("마법횃불1"));
+	_friends.push_back(IMAGEMANAGER->findImage("마법횃불2"));
+	_friends.push_back(IMAGEMANAGER->findImage("마법친구1"));
+	_princess = IMAGEMANAGER->findImage("마법공주");
+
+for (int i = 1; i < _friends.size() - 1; i++)
+	{
+			_friends[i]->frameRender(DC, 88 + (i - 1) * 202, 0, _friends[i]->getFrameX(), 0);
+	}
+	_friends[0]->frameRender(DC, 152, 42, _friends[0]->getFrameX(), 0);
+	_friends[_friends.size() - 1]->frameRender(DC, 70, 42, _friends[_friends.size() - 1]->getFrameX(), 0);
+	_princess->frameRender(DC, 280, 42, _frameX, 0);
+
+switch (RND->getInt(3))
+			{
+			case 0:
+				_type = EDU_STUDY;
+				_startF = 0, _endF = 7;
+				_typeStr = "공부중";
+				break;
+			case 1:
+				_type = EDU_SLEEP;
+				_startF = 8, _endF = 11;
+				_typeStr = "조는중";
+				break;
+			case 2:
+				_type = EDU_NOSTUDY;
+				_startF = 12, _endF = 13;
+				_typeStr = "농땡이";
+				break;
+			}
+
+
+예법위치
+
+_back = IMAGEMANAGER->findImage("예법배경");
+	_friends.push_back(IMAGEMANAGER->findImage("예법선생"));
+	_friends.push_back(IMAGEMANAGER->findImage("예법친구1"));
+	_friends.push_back(IMAGEMANAGER->findImage("예법친구2"));
+	_friends.push_back(IMAGEMANAGER->findImage("예법친구3"));
+	_princess = IMAGEMANAGER->findImage("예법공주");
+
+for (int i = 0; i < _friends.size(); i++)
+	{
+		if (i == 0)
+			_friends[i]->frameRender(DC, 180, 28, _friends[i]->getFrameX(), 0);
+		else if (i == 3)
+			_friends[i]->frameRender(DC, 340, 42, _friends[i]->getFrameX(), 0);
+		else
+			_friends[i]->frameRender(DC, 10 + (i - 1) * 80, 42, _friends[i]->getFrameX(), 0);
+	}
+	_princess->frameRender(DC, 269, 42, _frameX, 0);
+
+
+
+	switch (RND->getInt(3))
+	{
+	case 0:
+		_type = EDU_STUDY;
+		_startF = 0, _endF = 2;
+		_typeStr = "공부중";
+		break;
+	case 1:
+		_type = EDU_SLEEP;
+		_startF = 3, _endF = 4;
+		_typeStr = "조는중";
+		break;
+	case 2:
+		_type = EDU_NOSTUDY;
+		_startF = 5, _endF = 6;
+		_typeStr = "농땡이";
+		break;
+	}
+
+무용위치
+_back = IMAGEMANAGER->findImage("발레배경");
+	_friends.push_back(IMAGEMANAGER->findImage("발레선생"));
+	_friends.push_back(IMAGEMANAGER->findImage("발레친구1"));
+	_friends.push_back(IMAGEMANAGER->findImage("발레친구2"));
+	_princess = IMAGEMANAGER->findImage("발레공주");
+
+switch (RND->getInt(3))
+	{
+	case 0:
+		_type = EDU_STUDY;
+		_startF = 0, _endF = 3;
+		_typeStr = "공부중";
+		break;
+	case 1:
+		_type = EDU_SLEEP;
+		_startF = 4, _endF = 5;
+		_typeStr = "조는중";
+		break;
+	case 2:
+		_type = EDU_NOSTUDY;
+		_startF = 6, _endF = 7;
+		_typeStr = "농땡이";
+		break;
+	}
+
+for (int i = 0; i < _friends.size(); i++)
+	{
+	/*	if (i == 0)
+			_friends[i]->frameRender(DC, 180, 28, _friends[i]->getFrameX(), 0);
+		else*/
+			_friends[i]->frameRender(DC, 50 + i * 80, 42, _friends[i]->getFrameX(), 0);
+	}
+	_princess->frameRender(DC, 310, 42, _frameX, 0);
+
+미술
+
+_friends[0]->frameRender(DC, 89, 43, _friends[0]->getFrameX(), 0);
+	_friends[1]->frameRender(DC, 160, 42, _friends[1]->getFrameX(), 0);
+	_friends[_friends.size() - 1]->frameRender(DC, 310, 42, _friends[_friends.size() - 1]->getFrameX(), 0);
+	_princess->frameRender(DC, 10, 42, _frameX, 0);
+
+switch (RND->getInt(3))
+			{
+			case 0:
+				_type = EDU_STUDY;
+				_startF = 0, _endF = 2;
+				_typeStr = "공부중";
+				break;
+			case 1:
+				_type = EDU_SLEEP;
+				_startF = 3, _endF = 4;
+				_typeStr = "조는중";
+				break;
+			case 2:
+				_type = EDU_NOSTUDY;
+				_startF = 5, _endF = 6;
+				_typeStr = "농땡이";
+				break;
+			}
+
+_friends.push_back(IMAGEMANAGER->findImage("미술친구1"));
+	_friends.push_back(IMAGEMANAGER->findImage("미술친구2"));
+	_friends.push_back(IMAGEMANAGER->findImage("미술선생"));
+	_princess = IMAGEMANAGER->findImage("미술공주");
