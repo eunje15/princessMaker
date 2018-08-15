@@ -109,7 +109,7 @@ HRESULT playGround::image_init()
 	IMAGEMANAGER->addFrameImage("clothes", "image/item/clothes(400x40,10x1).bmp", 400, 40, 10, 1, false, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("cook", "image/item/cook(120x40,3x1).bmp", 120, 40, 3, 1, false, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("goods", "image/item/goods(240x40,6x1).bmp", 240, 40, 6, 1, false, RGB(255, 0, 255));
-
+	IMAGEMANAGER->addFrameImage("statusImg", "image/main/statusImage(120x40,3x1).bmp", 120, 40, 3, 1, false, RGB(255, 0, 255));
 
 	//===============성이미지=======================
 	IMAGEMANAGER->addImage("castlePicture", "image/main/castlePicture(252x163).bmp", 252, 163, false, RGB(255, 0, 255));

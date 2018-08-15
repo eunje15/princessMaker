@@ -42,6 +42,19 @@ void inventoryScene::update()
 		if (PtInRect(&_chooseBox[i].data.rc, _ptMouse))
 		{
 			_chooseBox[i].frameX = 1;
+			if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
+			{
+				if (i == 0)
+				{
+					_weaponOk[1] = false;
+					_selectItem[1]->setIsWear(false);
+				}
+				else
+				{
+					_weaponOk[0] = false;
+					_selectItem[0]->setIsWear(false);
+				}
+			}
 		}
 	}
 	for (int i = 0; i < _vInvenImg.size(); i++)
@@ -56,20 +69,51 @@ void inventoryScene::update()
 				{
 					for (int j = 0; j < _vInven[i]->getProperty().size(); j++)
 					{
-						if (_vInven[i]->getProperty()[j].first != "나이") continue;
-						if (_vInven[i]->getProperty()[j].second <= _princess->getInfo().age)
+						if (_vInven[i]->getProperty()[j].first != "나이" && _vInven[i]->getProperty()[j].first != "비만") continue;
+						if (_vInven[i]->getProperty()[j].first == "비만")
 						{
-							_vInven[i]->setIsWear(true);
-							_princess->getBodyInfoP()->clothesType = _vInven[i]->getFrameY();
-						}
-						else
-						{
+							if(_vInven[i]->getProperty()[j].second < 0 && _princess->getDate().type == PRINCESS_OBESITY)
 							_noAge = true;
-							setDialog("주인님, 이 옷을 입기엔 공주님이 아직 어리십니다.");
+							setDialog("주인님, 이 옷을 입기엔 공주님이 조금 통통하십니다.");
+							_cubeFrameX = 4;
 							_dialogIdx = 0;
 							_dialogType = DIALOG_ING;
 						}
+						else
+						{
+							if (_vInven[i]->getProperty()[j].second <= _princess->getInfo().age)
+							{
+								_vInven[i]->setIsWear(true);
+								_princess->getBodyInfoP()->clothesType = _vInven[i]->getFrameY();
+							}
+							else
+							{
+								_noAge = true;
+								setDialog("주인님, 이 옷을 입기엔 공주님이 아직 어리십니다.");
+								_cubeFrameX = 3;
+								_dialogIdx = 0;
+								_dialogType = DIALOG_ING;
+							}
+						}
 					}
+				}
+				else if (_vInven[i]->getType() == ITEM_WEAPON)
+				{
+					_weaponOk[1] = true;
+					_weaponFrameX[1] = _vInven[i]->getFrameX();
+					_selectItem[1] = _vInven[i];
+					_vInven[i]->setIsWear(true);
+				}
+				else if (_vInven[i]->getType() == ITEM_ARMOR)
+				{
+					_weaponOk[0] = true;
+					_weaponFrameX[0] = _vInven[i]->getFrameX();
+					_selectItem[0] = _vInven[i];
+					_vInven[i]->setIsWear(true);
+				}
+				for (int j = 0; j < _vInven[i]->getProperty().size(); j++)
+				{
+					changeStatus(_vInven[i]->getProperty()[j].first, _vInven[i]->getProperty()[j].second);
 				}
 			}
 		}
@@ -88,7 +132,37 @@ void inventoryScene::render()
 	
 		IMAGEMANAGER->findImage("info3Back")->render(DC, 10, 135);
 		TextOut(DC, 20, 145, "무기", strlen("무기"));
-		TextOut(DC, 20, 200, "방어", strlen("방어"));
+		if (_weaponOk[1])
+		{
+			IMAGEMANAGER->findImage("weapon")->frameRender(DC, 50, 145, _selectItem[1]->getFrameX(), 0);
+			TextOut(DC, 90, 145, _selectItem[1]->getName().c_str(), strlen(_selectItem[1]->getName().c_str()));
+			int strSize = 0;
+			for (int i = 0; i < _selectItem[1]->getProperty().size(); i++)
+			{
+				string str = _selectItem[1]->getProperty()[i].first;
+				if (_selectItem[1]->getProperty()[i].second > 0)
+					str += "+";
+				str += to_string((int)_selectItem[1]->getProperty()[i].second) + " ";
+				TextOut(DC, 90 + strSize, 170, str.c_str(), strlen(str.c_str()));
+				strSize += strlen(str.c_str()) + 5;
+			}
+		}
+		TextOut(DC, 20, 200, "방어구", strlen("방어구"));
+		if (_weaponOk[0])
+		{
+			IMAGEMANAGER->findImage("weapon")->frameRender(DC, 50, 145, _selectItem[0]->getFrameX(), 0);
+			TextOut(DC, 90, 145, _selectItem[0]->getName().c_str(), strlen(_selectItem[0]->getName().c_str()));
+			int strSize = 0;
+			for (int i = 0; i < _selectItem[0]->getProperty().size(); i++)
+			{
+				string str = _selectItem[0]->getProperty()[i].first;
+				if (_selectItem[0]->getProperty()[i].second > 0)
+					str += "+";
+				str += to_string((int)_selectItem[1]->getProperty()[i].second) + " ";
+				TextOut(DC, 90 + strSize, 170, str.c_str(), strlen(str.c_str()));
+				strSize += strlen(str.c_str()) + 5;
+			}
+		}
 		for (int i = 0; i < 2; i++)
 		{
 			_chooseBox[i].img->frameRender(DC, _chooseBox[i].data.rc.left, _chooseBox[i].data.rc.top, _chooseBox[i].frameX, 0);
@@ -119,7 +193,7 @@ void inventoryScene::render()
 	if (_noAge)
 	{
 		IMAGEMANAGER->findImage("frame")->render(DC, WINSIZEX - 150, 400);
-		IMAGEMANAGER->findImage("cube")->frameRender(DC, WINSIZEX - 140, 410, 3, 0);
+		IMAGEMANAGER->findImage("cube")->frameRender(DC, WINSIZEX - 140, 410, _cubeFrameX, 0);
 		IMAGEMANAGER->findImage("status2Back")->render(DC, 400, 405);
 		if (dialogRender())
 		{
@@ -178,6 +252,58 @@ void inventoryScene::setDialog(string dialog)
 		}
 	}
 	DIALOG->setDialog(_vDialog[0], 5);
+}
+
+void inventoryScene::changeStatus(string name, int value)
+{
+	if (name == "공격력")
+	{
+		_princess->getStatusP()->power += value;
+		if (_princess->getStatus().power < 0)
+			_princess->getStatusP()->power = 0;
+	}
+	else if (name == "전투기술")
+	{
+		_princess->getStatusP()->warriorSkill += value;
+		if (_princess->getStatus().warriorSkill < 0)
+			_princess->getStatusP()->warriorSkill = 0;
+	}
+	else if (name == "방어력")
+	{
+		_princess->getStatusP()->defPower += value;
+		if (_princess->getStatus().defPower < 0)
+			_princess->getStatusP()->defPower = 0;
+	}
+	else if (name == "기품")
+	{
+		_princess->getStatusP()->elegance += value;
+		if (_princess->getStatus().elegance < 0)
+			_princess->getStatusP()->elegance = 0;
+	}
+	else if (name == "항마력")
+	{
+		_princess->getStatusP()->spellDefence += value;
+		if (_princess->getStatus().spellDefence < 0)
+			_princess->getStatusP()->spellDefence = 0;
+	}
+	else if (name == "매력")
+	{
+		_princess->getStatusP()->sexual += value;
+		if (_princess->getStatus().sexual < 0)
+			_princess->getStatusP()->sexual = 0;
+	}
+	else if (name == "도덕성")
+	{
+		_princess->getStatusP()->morality += value;
+		if (_princess->getStatus().morality < 0)
+			_princess->getStatusP()->morality = 0;
+	}
+	else if (name == "감수성")
+	{
+		_princess->getStatusP()->sensitivity += value;
+		if (_princess->getStatus().sensitivity < 0)
+			_princess->getStatusP()->sensitivity = 0;
+	}
 }
 
 bool inventoryScene::dialogRender()

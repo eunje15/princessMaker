@@ -153,9 +153,6 @@
     <ClInclude Include="dataInput.h">
       <Filter>playGround\prologue</Filter>
     </ClInclude>
-    <ClInclude Include="data.h">
-      <Filter>playGround\prologue</Filter>
-    </ClInclude>
     <ClInclude Include="princess.h">
       <Filter>playGround\princess</Filter>
     </ClInclude>
@@ -248,6 +245,9 @@
     </ClInclude>
     <ClInclude Include="startScene.h">
       <Filter>playGround\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="data.h">
+      <Filter>playGround\princess</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

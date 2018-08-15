@@ -117,6 +117,7 @@ struct tagProgressFloat
 	RECT strRc, dataRc;
 };
 
+enum PRINCESS_TYPE { PRINCESS_NORMAL, PRINCESS_SICK, PRINCESS_DISOBEY, PRINCESS_LOVE, PRINCESS_OBESITY };
 struct tagDate
 {
 	int idx;
@@ -126,6 +127,7 @@ struct tagDate
 	int mon;
 	int day;
 	int dayOfWeek; //¿œ : 0 ~ ≈‰ : 6
+	PRINCESS_TYPE type;
 };
 
 struct tagStatusData

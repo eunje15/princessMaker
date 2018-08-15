@@ -44,8 +44,10 @@ private:
 	bool _dialogSelect, _isClick, _scheduleOk;
 	cube* _cube;
 	vector<string> _vDialog;
-	tagImg _store[7], _goldImg[7], _bodyInfo[5][3];
+	tagImg _store[7], _goldImg[7], _bodyInfo[5][3], _statusImg[5];
 	string _storeDialog;
+	item* _selectItem[2];
+	bool _weaponOk[2];
 
 	weaponStore* _weaponStore;
 	clothesStore* _clothesStore;

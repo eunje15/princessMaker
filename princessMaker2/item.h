@@ -30,6 +30,8 @@ public:
 	void setName(string name) { _name = name; }
 	void setFrameY(int frameY) { _clothesFrameY = frameY; }
 	int getFrameY() { return _clothesFrameY; }
+
+	int getFrameX() { return _frameX; }
 	float getX() { return _x; }
 	float getY() { return _y; }
 	ITEM_TYPE getType() { return _type; }

@@ -25,12 +25,11 @@ HRESULT princessScene::init()
 	_cal.img = IMAGEMANAGER->findImage("cal");
 	_cal.x = _cal.y = 0;
 
-	//임시로 지정
 	_year = _princess->getDate().year;
 	_mon = _princess->getDate().mon;
 	_day = _princess->getDate().day;
 	_dayOfWeek = _princess->getDate().dayOfWeek;
-	//_year = 1200, _mon = 2, _day = 28, _dayOfWeek = 0;
+	
 	_yearImg.img = IMAGEMANAGER->findImage("year");
 	_yearImg.frameY = _year - 1200;
 	_monImg.img = IMAGEMANAGER->findImage("month");
@@ -60,7 +59,7 @@ HRESULT princessScene::init()
 	_status.x = WINSIZEX - _status.img->getWidth();
 	_status.y = 0;
 	setStringStatus();
-	//_princess->setDietType(_strStatus[1].str); //임시
+	
 	_princess->setDietType(_princess->getInfo().dietType);
 	_printStrStatus.rc = RectMake(600, 166, _status.img->getWidth(), 22);
 	_nameRc = RectMake(600, 12, _status.img->getWidth(), 22);
@@ -98,6 +97,19 @@ HRESULT princessScene::init()
 	setGoldImg();
 	setBodyInfo();
 
+	for (int i = 0; i < 5; i++)
+	{
+		if (i < 2)
+			_statusImg[i].img = IMAGEMANAGER->findImage("weapon");
+		else
+		{
+			_statusImg[i].img = IMAGEMANAGER->findImage("statusImg");
+			_statusImg[i].frameX = i - 2;
+		}
+		_statusImg[i].data.rc = RectMake(WINSIZEX - 200 + i * 40, 117, 40, 40);
+		_statusImg[i].x = WINSIZEX - 200 + i * 40, _statusImg[i].y = 117;
+		_statusImg[i].frameY = 0;
+	}
 	_scheduleOk = false;
 
 	_cube = new cube;
@@ -295,6 +307,20 @@ void princessScene::update()
 	else if (_menuType == SELECT_WEAPON)
 	{
 		_inventoryScene->update();
+		if (_inventoryScene->getWeaponOk(0))
+		{
+			_statusImg[0].frameX = _inventoryScene->getWeaponFrameX(0);
+			_statusImg[0].data.isSelected = true;
+		}
+		else
+			_statusImg[0].data.isSelected = false;
+		if (_inventoryScene->getWeaponOk(1))
+		{
+			_statusImg[1].frameX = _inventoryScene->getWeaponFrameX(1);
+			_statusImg[1].data.isSelected = true;
+		}
+		else
+			_statusImg[1].data.isSelected = false;
 		if (_inventoryScene->getFin())
 			_menuType = SELECT_NONE;
 	}
@@ -342,6 +368,11 @@ void princessScene::render()
 	IMAGEMANAGER->findImage("number")->frameRender(DC, 615, 80, 1, 0);
 	IMAGEMANAGER->findImage("number")->frameRender(DC, 630, 80, _princess->getInfo().age % 10, 0);
 	_constellationImg.img->frameRender(DC, 650, 70, _constellationImg.frameX, 0);
+	for (int i = 0; i < 5; i++)
+	{
+		if (_statusImg[i].data.isSelected)
+			_statusImg[i].img->frameRender(DC, _statusImg[i].x, _statusImg[i].y, _statusImg[i].frameX, _statusImg[i].frameY);
+	}
 
 	for (int i = 0; i < 7; i++)
 	{
@@ -374,6 +405,11 @@ void princessScene::render()
 			for (int i = 0; i < 9; i++)
 			{
 				Rectangle(DC, _menubox[i].rc.left, _menubox[i].rc.top, _menubox[i].rc.right, _menubox[i].rc.bottom);
+			}
+
+			for (int i = 0; i < 5; i++)
+			{
+				Rectangle(DC, _statusImg[i].data.rc.left, _statusImg[i].data.rc.top, _statusImg[i].data.rc.right, _statusImg[i].data.rc.bottom);
 			}
 		}
 		break;
@@ -667,7 +703,37 @@ void princessScene::infoRender()
 
 	//info4
 	TextOut(DC, WINSIZEX - 270, 425, "무기", strlen("무기"));
+	if (_weaponOk[1])
+	{
+		IMAGEMANAGER->findImage("weapon")->frameRender(DC, WINSIZEX - 240, 145, _selectItem[1]->getFrameX(), 0);
+		TextOut(DC, WINSIZEX - 200, 145, _selectItem[1]->getName().c_str(), strlen(_selectItem[1]->getName().c_str()));
+		int strSize = 0;
+		for (int i = 0; i < _selectItem[1]->getProperty().size(); i++)
+		{
+			string str = _selectItem[1]->getProperty()[i].first;
+			if (_selectItem[1]->getProperty()[i].second > 0)
+				str += "+";
+			str += to_string((int)_selectItem[1]->getProperty()[i].second) + " ";
+			TextOut(DC, WINSIZEX - 200 + strSize, 170, str.c_str(), strlen(str.c_str()));
+			strSize += strlen(str.c_str()) + 5;
+		}
+	}
 	TextOut(DC, WINSIZEX - 270, 470, "방어구", strlen("방어구"));
+	if (_weaponOk[0])
+	{
+		IMAGEMANAGER->findImage("weapon")->frameRender(DC, WINSIZEX - 240, 145, _selectItem[0]->getFrameX(), 0);
+		TextOut(DC, WINSIZEX - 200, 145, _selectItem[0]->getName().c_str(), strlen(_selectItem[0]->getName().c_str()));
+		int strSize = 0;
+		for (int i = 0; i < _selectItem[0]->getProperty().size(); i++)
+		{
+			string str = _selectItem[0]->getProperty()[i].first;
+			if (_selectItem[0]->getProperty()[i].second > 0)
+				str += "+";
+			str += to_string((int)_selectItem[1]->getProperty()[i].second) + " ";
+			TextOut(DC, WINSIZEX - 200 + strSize, 170, str.c_str(), strlen(str.c_str()));
+			strSize += strlen(str.c_str()) + 5;
+		}
+	}
 	SelectObject(DC, oldFont);
 	DeleteObject(font);
 }
@@ -809,6 +875,23 @@ void princessScene::setBodyInfo()
 			_pBodyInfo[i].progressBar->setGauge(_pBodyInfo[i].data, 150);
 	}
 
+	_weaponOk[0] = _weaponOk[1] = false;
+	for (int i = 0; i < _princess->getVItem().size(); i++)
+	{
+		if (_princess->getVItem()[i]->getIsWear())
+		{
+			if (_princess->getVItem()[i]->getType() == ITEM_WEAPON)
+			{
+				_selectItem[1] = _princess->getVItem()[i];
+				_weaponOk[1] = true;
+			}
+			else if (_princess->getVItem()[i]->getType() == ITEM_ARMOR)
+			{
+				_selectItem[0] = _princess->getVItem()[i];
+				_weaponOk[0] = true;
+			}
+		}
+	}
 }
 
 void princessScene::setDate()

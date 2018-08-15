@@ -35,6 +35,7 @@ HRESULT princess::init()
 	_date.mon = _info.mon;
 	_date.day = _info.day;
 	_date.dayOfWeek = _info.dayOfWeek;
+	_date.type = PRINCESS_OBESITY;
 
 	if (3 <= _info.mon && _info.mon < 6)
 		_season = SPRING;
