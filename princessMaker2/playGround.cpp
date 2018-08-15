@@ -100,9 +100,9 @@ void playGround::render(void)
 
 	//IMAGEMANAGER->findImage("back")->render(DC);
 	//IMAGEMANAGER->findImage("body10")->frameRender(DC, 50, 50, 0, 2);
-	char str[128];
+	/*char str[128];
 	sprintf_s(str, "%d,%d", _ptMouse.x, _ptMouse.y);
-	TextOut(_camera->getMemDC(), 700, 20, str,strlen(str));
+	TextOut(_camera->getMemDC(), 700, 20, str,strlen(str));*/
 	//////////////////////////////////////////////////////////
 	//TIMEMANAGER->render(getMemDC());
 	if (_type == MAPTOOL)

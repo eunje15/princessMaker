@@ -247,7 +247,7 @@
       <Filter>playGround\battle</Filter>
     </ClInclude>
     <ClInclude Include="startScene.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>playGround\scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -405,7 +405,7 @@
       <Filter>playGround\battle</Filter>
     </ClCompile>
     <ClCompile Include="startScene.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>playGround\scene</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

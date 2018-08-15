@@ -19,7 +19,7 @@ HRESULT princess::init()
 	_info.year = 1200, _info.mon = 1, _info.day = 1, _info.dayOfWeek = 0;
 	_info.blood = BLOOD_A;
 	_info.strBlood = "A";
-	_info.age = 17;
+	_info.age = 10;
 	_info.dietType = "무리하지 않는다";
 
 	_bodyInfo.height = 149.16;

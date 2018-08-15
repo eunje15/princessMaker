@@ -10,11 +10,13 @@ class inventoryScene : public gameNode
 private:
 	princess* _princess;
 
-	bool _fin;
+	bool _fin, _noAge;
 	vector<tagImg> _vInvenImg;
 	vector<item*> _vInven;
 	tagImg _chooseBox[2];
-
+	vector<string> _vDialog;
+	int _dialogIdx;
+	DIALOG_TYPE _dialogType;
 public:
 	inventoryScene();
 	~inventoryScene();
@@ -25,6 +27,10 @@ public:
 	void release();
 
 	void setItem();
+
+	void setDialog(string dialog);
+
+	bool dialogRender();
 
 	void setFin(bool fin) { _fin = fin; }
 	bool getFin() { return _fin; }
