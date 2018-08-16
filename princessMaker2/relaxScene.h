@@ -29,6 +29,8 @@ private:
 	bool _fin, _moneyOk;
 	int _princessAnswer, _count;
 	int _dialogX, _dialogY, _princessFrameX;
+
+	string _curSound;
 public:
 	relaxScene();
 	~relaxScene();

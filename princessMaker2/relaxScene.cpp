@@ -124,10 +124,18 @@ void relaxScene::update()
 					_dialogType = DIALOG_ING;
 				}
 				else
+				{
 					_status = RELAX_ING;
+					_curSound = "free";
+					SOUNDMANAGER->play(_curSound);
+				}
 			}
 			else
+			{
 				_status = RELAX_ING;
+				_curSound = "beach";
+				SOUNDMANAGER->play(_curSound);
+			}
 		}
 		break;
 	case RELAX_FAIL:
@@ -143,8 +151,11 @@ void relaxScene::update()
 		if (_type == RELAX_FREE)
 		{
 			if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON) && _princessAnswer >= 2)
+			{
 				_fin = true;
-
+				if(SOUNDMANAGER->isPlaySound(_curSound))
+					SOUNDMANAGER->stop(_curSound);
+			}
 			_clickHome.isSelected = false;
 			if (PtInRect(&_clickHome.rc, _ptMouse))
 			{
@@ -177,6 +188,8 @@ void relaxScene::update()
 				if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 				{
 					_fin = true;
+					if (SOUNDMANAGER->isPlaySound(_curSound))
+						SOUNDMANAGER->stop(_curSound);
 				}
 			}
 		}

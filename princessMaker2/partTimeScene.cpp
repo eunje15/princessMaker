@@ -63,7 +63,7 @@ HRESULT partTimeScene::init(workStatus* work, int dayCount, int idx)
 	_fin = _workFin = false;
 	_goldOk = true;
 	_progress = STATUS_START;
-	string str = _princess->getInfo().name + "는 오늘부터 " + _workName + " 일을 시작합니다.";
+	string str = _princess->getInfo().name + "은/는 오늘부터 " + _workName + " 일을 시작합니다.";
 	setDialog(str);
 	_dialogX = 20, _dialogY = WINSIZEY - 180;
 	_dialogIdx = 0, _dialogType = DIALOG_ING;

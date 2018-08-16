@@ -14,7 +14,7 @@ castleScene::~castleScene()
 HRESULT castleScene::init()
 {
 	_princess = SCENEMANAGER->getPrincessAddress();
-
+	SOUNDMANAGER->play("town");
 	_npc.img = IMAGEMANAGER->findImage("peopleFace");
 	_npc.frameX = 12, _npc.frameY = 1;
 	_dialogIdx = 0;

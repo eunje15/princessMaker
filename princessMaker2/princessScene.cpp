@@ -16,6 +16,9 @@ HRESULT princessScene::init()
 	_princess = SCENEMANAGER->getPrincessAddress();
 	_princess->setAge(_princess->getInfo().age);
 
+	_curSound = "START";
+	changeSound();
+
 	_im = new itemManager;
 	_im->init();
 
@@ -112,7 +115,7 @@ HRESULT princessScene::init()
 		_statusImg[i].frameY = 0;
 	}
 	_scheduleOk = false;
-
+	
 	_cube = new cube;
 	_cube->init();
 
@@ -202,10 +205,15 @@ void princessScene::update()
 					case 4:
 						_menuType = SELECT_TOWN;
 						_storeType = STORE_SELECT;
+						SOUNDMANAGER->stop(_curSound);
+						SOUNDMANAGER->play("town");
+						_curSound = "town";
 						setStore();
 						break;
 					case 5:
 						_menuType = SELECT_CASTLE;
+						SOUNDMANAGER->stop(_curSound);
+						_curSound = "castle";
 						_castleScene->init();
 						break;
 					case 6:
@@ -223,7 +231,7 @@ void princessScene::update()
 							setNextMonth();
 							_scheduleOk = false;
 						}
-						_scheduleScene->init(_year, _mon);
+						_scheduleScene->init(_year, _mon, _curSound);
 						break;
 					}
 					_menubox[i].isData = true;
@@ -237,6 +245,7 @@ void princessScene::update()
 		_menuType = SELECT_NONE;
 		_storeType = STORE_NONE;
 		if (_cube->getDialogFin()) _cube->setDialogFin(false);
+		//changeSound();
 	}
 
 	if (_menuType == SELECT_TALK)
@@ -260,6 +269,9 @@ void princessScene::update()
 		switch (_storeType)
 		{
 		case STORE_NONE: case STORE_SELECT:
+		/*	if (SOUNDMANAGER->isPlaySound(_curSound)) SOUNDMANAGER->stop(_curSound);
+			SOUNDMANAGER->play("town");
+			_curSound = "town";*/
 			clickStore();
 			break;
 		case STORE_WEAPON:
@@ -304,7 +316,10 @@ void princessScene::update()
 	{
 		_castleScene->update();
 		if (_castleScene->getFin())
+		{
 			_menuType = SELECT_NONE;
+			changeSound();
+		}
 	}
 	else if (_menuType == SELECT_WEAPON)
 	{
@@ -344,6 +359,7 @@ void princessScene::update()
 		{
 			_menuType = SELECT_NONE;
 			_scheduleOk = true;
+			changeSound();
 			//setNextMonth();
 		}
 	}
@@ -476,6 +492,32 @@ void princessScene::render()
 	SetTextColor(DC, RGB(255, 255, 255));
 	//sprintf_s(str, "%d %d", _ptMouse.x, _ptMouse.y);
 	//TextOut(DC, 50, 50, str, strlen(str));
+}
+
+void princessScene::changeSound()
+{
+	if (_curSound != "START")
+		SOUNDMANAGER->stop(_curSound);
+	if (_princess->getSeason() == SPRING)
+	{
+		SOUNDMANAGER->play("spring");
+		_curSound = "spring";
+	}
+	else if (_princess->getSeason() == SUMMER)
+	{
+		SOUNDMANAGER->play("summer");
+		_curSound = "summer";
+	}
+	else if (_princess->getSeason() == AUTUMN)
+	{
+		SOUNDMANAGER->play("autumn");
+		_curSound = "autumn";
+	}
+	else if (_princess->getSeason() == WINTER)
+	{
+		SOUNDMANAGER->play("winter");
+		_curSound = "winter";
+	}
 }
 
 void princessScene::setInfo()
@@ -1344,6 +1386,7 @@ void princessScene::clickStore()
 				case 6:
 					_menuType = SELECT_NONE;
 					_storeType = STORE_NONE;
+					changeSound();
 					break;
 				}
 			}

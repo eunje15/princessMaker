@@ -25,6 +25,7 @@ private:
 public:
 	virtual HRESULT init(void);
 	virtual HRESULT image_init(void);
+	virtual HRESULT sound_add(void);
 	virtual void release(void);
 	virtual void update(void);
 	virtual void render(void);

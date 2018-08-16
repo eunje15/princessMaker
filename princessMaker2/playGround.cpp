@@ -18,6 +18,7 @@ HRESULT playGround::init(void)
 	_cameraCenter = PointMake(WINSIZEX / 2, WINSIZEY / 2);
 
 	image_init();
+	sound_add();
 	
 	_princess = new princess;
 	_princess->init();
@@ -29,7 +30,7 @@ HRESULT playGround::init(void)
 	SCENEMANAGER->addScene("공주씬", new princessScene);
 	SCENEMANAGER->addScene("스타트씬", new startScene);
 	
-	SCENEMANAGER->changeScene("스타트씬");
+	SCENEMANAGER->changeScene("공주씬");
 	//_str = TXTDATA->txtLoadCsv("dialog/별자리능력치.csv", "처녀자리");
 
 	/*

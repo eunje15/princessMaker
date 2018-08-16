@@ -27,18 +27,20 @@ private:
 	string _scheduleWeek[4];
 	int _itemIdx[4];
 
-	int _dialogIdx, _scheduleIdx, _selectNum;
+	int _dialogIdx, _scheduleIdx, _selectNum, _startDay, _countDay;
 
 	statusManager* _sm;
 	educationScene* _education;
 	partTimeScene* _work;
 	relaxScene* _relax;
 
+	string _curSound;
+
 public:
 	scheduleScene();
 	~scheduleScene();
 
-	HRESULT init(int year, int mon);
+	HRESULT init(int year, int mon, string curSound);
 	void update();
 	void render();
 	void release();

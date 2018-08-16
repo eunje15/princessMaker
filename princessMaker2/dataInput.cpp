@@ -17,6 +17,7 @@ HRESULT dataInput::init()
 	_princess = SCENEMANAGER->getPrincessAddress();
 	_mode = PROLOGUE_DADNAME;
 	setDadName();
+	SOUNDMANAGER->play("prologue0", 1.0f);
 	return S_OK;
 }
 
@@ -179,6 +180,7 @@ void dataInput::changeMode()
 			_princess->setInfo(_princessInfo);
 			_princess->setStatus(_princessStatus);
 			_princess->setDadName(_dadName);
+			SOUNDMANAGER->stop("prologue0");
 			SCENEMANAGER->changeScene("프롤로그");
 			break;
 	}

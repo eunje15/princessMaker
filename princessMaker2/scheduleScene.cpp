@@ -11,11 +11,13 @@ scheduleScene::~scheduleScene()
 {
 }
 
-HRESULT scheduleScene::init(int year, int mon)
+HRESULT scheduleScene::init(int year, int mon, string curSound)
 {
 	_princess = SCENEMANAGER->getPrincessAddress();
 	//걍 지금은 일요일부터 무조건 시작
 	_year = year, _mon = mon;
+
+	_curSound = curSound;
 
 	int finday = 30;
 	if (mon == 1 || mon == 3 || mon == 5 || mon == 7 || mon == 8 || mon == 10 || mon == 12)
@@ -23,17 +25,51 @@ HRESULT scheduleScene::init(int year, int mon)
 	else if (mon == 2)
 		finday = 28;
 
+	_scheduleIdx = 0;
+
+	_startDay = _princess->getDate().day;
+	if (_princess->getDate().day == 1) _startDay--;
+	_countDay = 10;
+	if (10 < _startDay && _startDay <= 20)
+	{
+		_scheduleIdx = 1;
+		_scheduleWeek[0] = "noSchedule";
+		_countDay = 20 - _startDay + 1;
+	}
+	if (20 < _startDay && _startDay < finday)
+	{
+		//if (10 < _startDay && _startDay < 20)
+		{
+			_scheduleIdx = 2;
+			_scheduleWeek[0] = _scheduleWeek[1] = "noSchedule";
+			_countDay = finday - _startDay + 1;
+		}
+	}
+
+	int startPoint = (_startDay / 7)*7 + _princess->getDate().dayOfWeek;
+	int dayCount = _princess->getDate().day;
+
 	for (int i = 0; i < 42; i++)
 	{
 		_calImg[i].data.rc = RectMake(20 + (i % 7) * 40, 160 + 40 * (i / 7), 40, 40);
 		_calImg[i].x = (_calImg[i].data.rc.right + _calImg[i].data.rc.left) / 2 - 3;
 		_calImg[i].y = (_calImg[i].data.rc.bottom + _calImg[i].data.rc.top) / 2 - 3;
 		_calImg[i].data.isSelected = _calImg[i].data.isChoose = false;
-		if (i < finday)
+		_calImg[i].frameY = -1;
+		if (i < startPoint)
 		{
 			_calImg[i].data.str = to_string(i + 1);
 			_calImg[i].data.isChoose = true;
+			continue;
 		}
+		else if (i > finday - _startDay + startPoint)
+		{
+			_calImg[i].data.str = to_string(i + 1);
+			_calImg[i].data.isChoose = true;
+			continue;
+		}
+		_calImg[i].data.str = to_string(dayCount);
+		dayCount++;
 	}
 
 	for (int i = 0; i < 4; i++)
@@ -56,8 +92,9 @@ HRESULT scheduleScene::init(int year, int mon)
 	_type = SCHEDULE_NONE;
 
 	setDialog("이번달 딸의 예정은?(첫번째)");
+
 	_dialogType = DIALOG_ING;
-	_dialogIdx = _scheduleIdx = 0;
+	_dialogIdx = 0;
 	_selectNum = -1;
 	setScheduleImage();
 
@@ -145,53 +182,66 @@ void scheduleScene::update()
 							int count = 0;
 							for (int i = 0; i < 42; i++)
 							{
-								if (!_calImg[i].data.isChoose || _calImg[i].data.isSelected) continue;
+								if (_calImg[i].data.isChoose || _calImg[i].data.isSelected) continue;
 								count++;
 								_calImg[i].frameX = _sm->getVTeach()[_selectNum]->getFrameIndex();
+								_calImg[i].frameY = 0;
 								_calImg[i].data.isSelected = true;
-								if (_scheduleIdx < 2)
+								if (_scheduleIdx == 1)
 								{
-									if (count == 10)
+									if (count == _countDay)
 									{
-										_scheduleWeek[_scheduleIdx] = "teach";
-										_itemIdx[_scheduleIdx] = _calImg[i].frameX;
-										_scheduleIdx++;
-										break;
+										if (_startDay < 20) _startDay = 20;
+										if (_mon == 1 || _mon == 3 || _mon == 5 || _mon == 7 || _mon == 8 || _mon == 10 || _mon == 12)
+										{
+
+											_scheduleWeek[_scheduleIdx] = _scheduleWeek[_scheduleIdx + 1] = "teach";
+											_itemIdx[_scheduleIdx] = _itemIdx[_scheduleIdx + 1] = _calImg[i].frameX;
+											_scheduleIdx++;
+											_countDay = 31 - _startDay;
+											break;
+
+										}
+										else if (_mon == 2)
+										{
+
+											_scheduleWeek[_scheduleIdx] = _scheduleWeek[_scheduleIdx + 1] = "teach";
+											_itemIdx[_scheduleIdx] = _itemIdx[_scheduleIdx + 1] = _calImg[i].frameX;
+											_scheduleIdx++;
+											_countDay = 28 - _startDay;
+											break;
+
+										}
+										else
+										{
+
+											_scheduleWeek[_scheduleIdx] = "teach";
+											_itemIdx[_scheduleIdx] = _calImg[i].frameX;
+											_scheduleIdx++;
+											_countDay = 30 - _startDay;
+											break;
+										}
 									}
 								}
 								else
 								{
-									if (_mon == 1 || _mon == 3 || _mon == 5 || _mon == 7 || _mon == 8 || _mon == 10 || _mon == 12)
+									if (count == _countDay)
 									{
-										if (count == 11)
+										_scheduleWeek[_scheduleIdx] = "teach", _itemIdx[_scheduleIdx] = _calImg[i].frameX;
+										if (_scheduleIdx == 2)
 										{
-											_scheduleWeek[_scheduleIdx] = _scheduleWeek[_scheduleIdx + 1] = "teach";
-											_itemIdx[_scheduleIdx] = _itemIdx[_scheduleIdx + 1] = _calImg[i].frameX;
-											_scheduleIdx++;
-											break;
+											_scheduleWeek[_scheduleIdx + 1] = "teach";
+											_itemIdx[_scheduleIdx + 1] = _calImg[i].frameX;
+											_startDay = _princess->getDate().day;
+											if (_princess->getDate().day == 1) _startDay--;
 										}
+										else if(_startDay < 10)
+											_startDay = 10;
+										_scheduleIdx++;
+										_countDay = 10;
+										break;
 									}
-									else if (_mon == 2)
-									{
-										if (count == 8)
-										{
-											_scheduleWeek[_scheduleIdx] = _scheduleWeek[_scheduleIdx + 1] = "teach";
-											_itemIdx[_scheduleIdx] = _itemIdx[_scheduleIdx + 1] = _calImg[i].frameX;
-											_scheduleIdx++;
-											break;
-										}
-									}
-									else
-									{
-										if (count == 10)
-										{
-											_scheduleWeek[_scheduleIdx] = "teach";
-											_itemIdx[_scheduleIdx] = _calImg[i].frameX;
-											_scheduleIdx++;
-											break;
-										}
-									}
-								}
+								}	
 							}
 							_type = SCHEDULE_NONE;
 							string str = "네, 스케줄에 편성하겠습니다. 이번달 딸의 예정은?";
@@ -250,69 +300,84 @@ void scheduleScene::update()
 					_selectBox[i].isSelected = true;
 					if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 					{
-						_select = false;
-						if (i == 0)
+						if(i == 0)
 						{
-							int count = 0;
-							for (int i = 0; i < 42; i++)
+						_select = false;
+						int count = 0;
+						for (int i = 0; i < 42; i++)
+						{
+							if (_calImg[i].data.isChoose || _calImg[i].data.isSelected) continue;
+							count++;
+							_calImg[i].frameX = _sm->getVWork()[_selectNum]->getFrameIndex();
+							_calImg[i].frameY = 1;
+							_calImg[i].data.isSelected = true;
+							if (_scheduleIdx == 1)
 							{
-								if (!_calImg[i].data.isChoose || _calImg[i].data.isSelected) continue;
-								count++;
-								_calImg[i].frameX = _sm->getVWork()[_selectNum]->getFrameIndex();
-								_calImg[i].data.isSelected = true;
-								if (_scheduleIdx < 2)
+								if (count == _countDay)
 								{
-									if (count == 10)
-									{
-										_scheduleWeek[_scheduleIdx] = "work";
-										_itemIdx[_scheduleIdx] = _calImg[i].frameX;
-										_scheduleIdx++;
-										break;
-									}
-								}
-								else
-								{
+									if (_startDay < 20) _startDay = 20;
 									if (_mon == 1 || _mon == 3 || _mon == 5 || _mon == 7 || _mon == 8 || _mon == 10 || _mon == 12)
 									{
-										if (count == 11)
-										{
-											_scheduleWeek[_scheduleIdx] = _scheduleWeek[_scheduleIdx + 1] = "work";
-											_itemIdx[_scheduleIdx] = _itemIdx[_scheduleIdx + 1] = _calImg[i].frameX;
-											_scheduleIdx++;
-											break;
-										}
+
+										_scheduleWeek[_scheduleIdx] = _scheduleWeek[_scheduleIdx + 1] = "work";
+										_itemIdx[_scheduleIdx] = _itemIdx[_scheduleIdx + 1] = _calImg[i].frameX;
+										_scheduleIdx++;
+										_countDay = 31 - _startDay;
+										break;
+
 									}
 									else if (_mon == 2)
 									{
-										if (count == 8)
-										{
-											_scheduleWeek[_scheduleIdx] = _scheduleWeek[_scheduleIdx + 1] = "teach";
-											_itemIdx[_scheduleIdx] = _itemIdx[_scheduleIdx + 1] = _calImg[i].frameX;
-											_scheduleIdx++;
-											break;
-										}
+
+										_scheduleWeek[_scheduleIdx] = _scheduleWeek[_scheduleIdx + 1] = "work";
+										_itemIdx[_scheduleIdx] = _itemIdx[_scheduleIdx + 1] = _calImg[i].frameX;
+										_scheduleIdx++;
+										_countDay = 28 - _startDay;
+										break;
+
 									}
 									else
 									{
-										if (count == 10)
-										{
-											_scheduleWeek[_scheduleIdx] = "work";
-											_itemIdx[_scheduleIdx] = _calImg[i].frameX;
-											_scheduleIdx++;
-											break;
-										}
+
+										_scheduleWeek[_scheduleIdx] = "work";
+										_itemIdx[_scheduleIdx] = _calImg[i].frameX;
+										_scheduleIdx++;
+										_countDay = 30 - _startDay;
+										break;
+
 									}
 								}
 							}
-							_type = SCHEDULE_NONE;
-							string str = "네, 스케줄에 편성하겠습니다. 이번달 딸의 예정은?";
-							if (_scheduleIdx == 1)
-								str += "(두번째)";
-							else if (_scheduleIdx == 2)
-								str += "(세번째)";
-							setDialog(str);
-							_dialogType = DIALOG_FIN;
+							else
+							{
+								if (count == _countDay)
+								{
+									_scheduleWeek[_scheduleIdx] = "work", _itemIdx[_scheduleIdx] = _calImg[i].frameX;
+									if (_scheduleIdx == 2)
+									{
+										_scheduleWeek[_scheduleIdx + 1] = "work";
+										_itemIdx[_scheduleIdx + 1] = _calImg[i].frameX;
+										_startDay = _princess->getDate().day;
+										if (_princess->getDate().day == 1) _startDay--;
+									}
+									else if (_startDay < 10)
+										_startDay = 10;
+									_scheduleIdx++;
+									_countDay = 10;
+									break;
+								}
+							}
 						}
+					
+						_type = SCHEDULE_NONE;
+						string str = "네, 스케줄에 편성하겠습니다. 이번달 딸의 예정은?";
+						if (_scheduleIdx == 1)
+							str += "(두번째)";
+						else if (_scheduleIdx == 2)
+							str += "(세번째)";
+						setDialog(str);
+						_dialogType = DIALOG_FIN;
+					}
 						else
 						{
 							_type = SCHEDULE_NONE;
@@ -365,54 +430,68 @@ void scheduleScene::update()
 							int count = 0;
 							for (int i = 0; i < 42; i++)
 							{
-								if (!_calImg[i].data.isChoose || _calImg[i].data.isSelected) continue;
+								if (_calImg[i].data.isChoose || _calImg[i].data.isSelected) continue;
 								count++;
 								_calImg[i].frameX = _fightImg[_selectNum].frameY;
+								_calImg[i].frameY = 2;
 								_calImg[i].data.isSelected = true;
-								if (_scheduleIdx < 2)
+								if (_scheduleIdx == 1)
 								{
-									if (count == 10)
+									if (count == _countDay)
 									{
-										_scheduleWeek[_scheduleIdx] = "fight";
-										_itemIdx[_scheduleIdx] = _calImg[i].frameX;
-										_scheduleIdx++;
-										break;
+										if (_startDay < 20) _startDay = 20;
+										if (_mon == 1 || _mon == 3 || _mon == 5 || _mon == 7 || _mon == 8 || _mon == 10 || _mon == 12)
+										{
+
+											_scheduleWeek[_scheduleIdx] = _scheduleWeek[_scheduleIdx + 1] = "fight";
+											_itemIdx[_scheduleIdx] = _itemIdx[_scheduleIdx + 1] = _calImg[i].frameX;
+											_scheduleIdx++;
+											_countDay = 31 - _startDay;
+											break;
+
+										}
+										else if (_mon == 2)
+										{
+
+											_scheduleWeek[_scheduleIdx] = _scheduleWeek[_scheduleIdx + 1] = "fight";
+											_itemIdx[_scheduleIdx] = _itemIdx[_scheduleIdx + 1] = _calImg[i].frameX;
+											_scheduleIdx++;
+											_countDay = 28 - _startDay;
+											break;
+
+										}
+										else
+										{
+
+											_scheduleWeek[_scheduleIdx] = "fight";
+											_itemIdx[_scheduleIdx] = _calImg[i].frameX;
+											_scheduleIdx++;
+											_countDay = 30 - _startDay;
+											break;
+										}
 									}
 								}
 								else
 								{
-									if (_mon == 1 || _mon == 3 || _mon == 5 || _mon == 7 || _mon == 8 || _mon == 10 || _mon == 12)
+									if (count == _countDay)
 									{
-										if (count == 11)
+										_scheduleWeek[_scheduleIdx] = "fight", _itemIdx[_scheduleIdx] = _calImg[i].frameX;
+										if (_scheduleIdx == 2)
 										{
-											_scheduleWeek[_scheduleIdx] = _scheduleWeek[_scheduleIdx + 1] = "fight";
-											_itemIdx[_scheduleIdx] = _itemIdx[_scheduleIdx + 1] = _calImg[i].frameX;
-											_scheduleIdx++;
-											break;
+											_scheduleWeek[_scheduleIdx + 1] = "fight";
+											_itemIdx[_scheduleIdx + 1] = _calImg[i].frameX;
+											_startDay = _princess->getDate().day;
+											if (_princess->getDate().day == 1) _startDay--;
 										}
-									}
-									else if (_mon == 2)
-									{
-										if (count == 8)
-										{
-											_scheduleWeek[_scheduleIdx] = _scheduleWeek[_scheduleIdx + 1] = "teach";
-											_itemIdx[_scheduleIdx] = _itemIdx[_scheduleIdx + 1] = _calImg[i].frameX;
-											_scheduleIdx++;
-											break;
-										}
-									}
-									else
-									{
-										if (count == 10)
-										{
-											_scheduleWeek[_scheduleIdx] = "fight";
-											_itemIdx[_scheduleIdx] = _calImg[i].frameX;
-											_scheduleIdx++;
-											break;
-										}
+										else if (_startDay < 10)
+											_startDay = 10;
+										_scheduleIdx++;
+										_countDay = 10;
+										break;
 									}
 								}
 							}
+		
 							_type = SCHEDULE_NONE;
 							string str = "네, 스케줄에 편성하겠습니다. 이번달 딸의 예정은?";
 							if (_scheduleIdx == 1)
@@ -472,54 +551,64 @@ void scheduleScene::update()
 						_select = false;
 						if (i == 0)
 						{
+							_select = false;
 							int count = 0;
 							for (int i = 0; i < 42; i++)
 							{
-								if (!_calImg[i].data.isChoose || _calImg[i].data.isSelected) continue;
+								if (_calImg[i].data.isChoose || _calImg[i].data.isSelected) continue;
 								count++;
 								_calImg[i].frameX = _relaxImg[_selectNum].frameY;
+								_calImg[i].frameY = 3;
 								_calImg[i].data.isSelected = true;
-								if (_scheduleIdx < 2)
+								if (_scheduleIdx == 1)
 								{
-									if (count == 10)
+									if (count == _countDay)
 									{
-										_scheduleWeek[_scheduleIdx] = "relax";
-										_itemIdx[_scheduleIdx] = _calImg[i].frameX;
-										_scheduleIdx++;
-										break;
+										if (_mon == 1 || _mon == 3 || _mon == 5 || _mon == 7 || _mon == 8 || _mon == 10 || _mon == 12)
+										{
+
+											_scheduleWeek[_scheduleIdx] = _scheduleWeek[_scheduleIdx + 1] = "relax";
+											_itemIdx[_scheduleIdx] = _itemIdx[_scheduleIdx + 1] = _calImg[i].frameX;
+											_scheduleIdx++;
+											_countDay = 31 - i;
+											break;
+
+										}
+										else if (_mon == 2)
+										{
+
+											_scheduleWeek[_scheduleIdx] = _scheduleWeek[_scheduleIdx + 1] = "relax";
+											_itemIdx[_scheduleIdx] = _itemIdx[_scheduleIdx + 1] = _calImg[i].frameX;
+											_scheduleIdx++;
+											_countDay = 28 - i;
+											break;
+
+										}
+										else
+										{
+
+											_scheduleWeek[_scheduleIdx] = "relax";
+											_itemIdx[_scheduleIdx] = _calImg[i].frameX;
+											_scheduleIdx++;
+											_countDay = 30 - i;
+											break;
+
+										}
 									}
 								}
 								else
 								{
-									if (_mon == 1 || _mon == 3 || _mon == 5 || _mon == 7 || _mon == 8 || _mon == 10 || _mon == 12)
+									if (count == _countDay)
 									{
-										if (count == 11)
+										_scheduleWeek[_scheduleIdx] = "relax", _itemIdx[_scheduleIdx] = _calImg[i].frameX;
+										if (_scheduleIdx == 2)
 										{
-											_scheduleWeek[_scheduleIdx] = _scheduleWeek[_scheduleIdx + 1] = "relax";
-											_itemIdx[_scheduleIdx] = _itemIdx[_scheduleIdx + 1] = _calImg[i].frameX;
-											_scheduleIdx++;
-											break;
+											_scheduleWeek[_scheduleIdx + 1] = "relax";
+											_itemIdx[_scheduleIdx + 1] = _calImg[i].frameX;
 										}
-									}
-									else if (_mon == 2)
-									{
-										if (count == 8)
-										{
-											_scheduleWeek[_scheduleIdx] = _scheduleWeek[_scheduleIdx + 1] = "teach";
-											_itemIdx[_scheduleIdx] = _itemIdx[_scheduleIdx + 1] = _calImg[i].frameX;
-											_scheduleIdx++;
-											break;
-										}
-									}
-									else
-									{
-										if (count == 10)
-										{
-											_scheduleWeek[_scheduleIdx] = "relax";
-											_itemIdx[_scheduleIdx] = _calImg[i].frameX;
-											_scheduleIdx++;
-											break;
-										}
+										_scheduleIdx++;
+										_countDay = 10;
+										break;
 									}
 								}
 							}
@@ -564,7 +653,15 @@ void scheduleScene::update()
 					{
 						//_fin = true;
 						_type = SCHEDULE_GO;
-						_scheduleIdx = -1;
+						//_scheduleIdx = -1;
+						for (int j = 0; j < 3; j++)
+						{
+							if (_scheduleWeek[j] != "noSchedule")
+							{
+								_scheduleIdx = j - 1;
+								break;
+							}
+						}
 						_select = false;
 
 						string str;
@@ -593,6 +690,7 @@ void scheduleScene::update()
 						for (int i = 0; i < 42; i++)
 						{
 							_calImg[i].data.isSelected = false;
+							_calImg[i].frameY = -1;
 						}
 					}
 				}
@@ -620,6 +718,8 @@ void scheduleScene::update()
 				_education->update();
 				if (_education->getFin())
 				{
+					if (SOUNDMANAGER->isPlaySound(_curSound))
+						SOUNDMANAGER->stop(_curSound);
 					if (_progress == SCHEDULE_ING)
 					{
 						_progress = SCHEDULE_FIN;
@@ -636,6 +736,8 @@ void scheduleScene::update()
 				_work->update();
 				if (_work->getFin())
 				{
+					if (SOUNDMANAGER->isPlaySound(_curSound))
+						SOUNDMANAGER->stop(_curSound);
 					if (_progress == SCHEDULE_ING)
 					{
 						_progress = SCHEDULE_FIN;
@@ -689,6 +791,7 @@ void scheduleScene::update()
 			for (int i = 41; i > _scheduleIdx * 10; i--)
 			{
 				_calImg[i].data.isSelected = false;
+				_calImg[i].frameY = -1;
 			}
 
 			if (_scheduleIdx == 0)
@@ -944,28 +1047,36 @@ void scheduleScene::render()
 		int count = 0;
 		for (int i = 0; i < 42; i++)
 		{
-			if (!_calImg[i].data.isChoose) break;
-			if (_calImg[i].data.isSelected)
+			if (!_calImg[i].data.isChoose)
 			{
-				if (i == 30)
-					int a = 0;
-				/*if (count / 10 < 0)
+				if (_calImg[i].data.isSelected)
 				{
-				IMAGEMANAGER->findImage("teachImg")->frameRender(DC, _calImg[i].data.rc.left, _calImg[i].data.rc.top, _calImg[i].frameX, 0);
-				}*/
-				if (_scheduleWeek[count / 10] == "teach")
-					IMAGEMANAGER->findImage("teachImg")->frameRender(DC, _calImg[i].data.rc.left, _calImg[i].data.rc.top, _calImg[i].frameX, 0);
-				else if (_scheduleWeek[count / 10] == "work")
-					IMAGEMANAGER->findImage("workImg")->frameRender(DC, _calImg[i].data.rc.left, _calImg[i].data.rc.top, _calImg[i].frameX, 0);
-				else if (_scheduleWeek[count / 10] == "fight")
-					IMAGEMANAGER->findImage("fightImg")->frameRender(DC, _calImg[i].data.rc.left, _calImg[i].data.rc.top, _calImg[i].frameX, 0);
-				else if (_scheduleWeek[count / 10] == "relax")
-					IMAGEMANAGER->findImage("relaxImg")->frameRender(DC, _calImg[i].data.rc.left, _calImg[i].data.rc.top, _calImg[i].frameX, 0);
-				count++;
+					///*if (count / 10 < 0)
+					//{
+					//IMAGEMANAGER->findImage("teachImg")->frameRender(DC, _calImg[i].data.rc.left, _calImg[i].data.rc.top, _calImg[i].frameX, 0);
+					//}*/
+					//if (_scheduleWeek[count / 10] == "teach")
+					//	IMAGEMANAGER->findImage("teachImg")->frameRender(DC, _calImg[i].data.rc.left, _calImg[i].data.rc.top, _calImg[i].frameX, 0);
+					//else if (_scheduleWeek[count / 10] == "work")
+					//	IMAGEMANAGER->findImage("workImg")->frameRender(DC, _calImg[i].data.rc.left, _calImg[i].data.rc.top, _calImg[i].frameX, 0);
+					//else if (_scheduleWeek[count / 10] == "fight")
+					//	IMAGEMANAGER->findImage("fightImg")->frameRender(DC, _calImg[i].data.rc.left, _calImg[i].data.rc.top, _calImg[i].frameX, 0);
+					//else if (_scheduleWeek[count / 10] == "relax")
+					//	IMAGEMANAGER->findImage("relaxImg")->frameRender(DC, _calImg[i].data.rc.left, _calImg[i].data.rc.top, _calImg[i].frameX, 0);
+					if(_calImg[i].frameY == 0)
+						IMAGEMANAGER->findImage("teachImg")->frameRender(DC, _calImg[i].data.rc.left, _calImg[i].data.rc.top, _calImg[i].frameX, 0);
+					else if (_calImg[i].frameY == 1)
+						IMAGEMANAGER->findImage("workImg")->frameRender(DC, _calImg[i].data.rc.left, _calImg[i].data.rc.top, _calImg[i].frameX, 0);
+					else if (_calImg[i].frameY == 2)
+						IMAGEMANAGER->findImage("fightImg")->frameRender(DC, _calImg[i].data.rc.left, _calImg[i].data.rc.top, _calImg[i].frameX, 0);
+					else if (_calImg[i].frameY == 3)
+						IMAGEMANAGER->findImage("relaxImg")->frameRender(DC, _calImg[i].data.rc.left, _calImg[i].data.rc.top, _calImg[i].frameX, 0);
+
+				}
+				IMAGEMANAGER->findImage("smallDay")->frameRender(DC, _calImg[i].x, _calImg[i].y, 0, atoi(_calImg[i].data.str.c_str()) - 1);
 			}
-			IMAGEMANAGER->findImage("smallDay")->frameRender(DC, _calImg[i].x, _calImg[i].y, 0, atoi(_calImg[i].data.str.c_str()) - 1);
+			count++;
 		}
-		
 	}
 }
 
@@ -980,29 +1091,73 @@ void scheduleScene::setSchedule()
 	_progress = SCHEDULE_ING;
 
 	_scheduleIdx++;
+	//_startDay = _princess->getDate().day - 1;
 	if (_scheduleIdx > 2)
 	{
 		_fin = true;
 		return;
 	}
-
+	SOUNDMANAGER->stop(_curSound);
 	if (_scheduleWeek[_scheduleIdx] == "teach")
 	{
-		if (_scheduleIdx == 2 && (_mon == 1 || _mon == 3 || _mon == 5 || _mon == 7 || _mon == 8 || _mon == 10 || _mon == 12))
-			_education->init(_sm->getVTeach()[_itemIdx[_scheduleIdx]], 11, _itemIdx[_scheduleIdx]);
-		else if (_scheduleIdx == 2 && _mon == 2)
-			_education->init(_sm->getVTeach()[_itemIdx[_scheduleIdx]], 8, _itemIdx[_scheduleIdx]);
+		if (_startDay < 10)
+		{
+			_education->init(_sm->getVTeach()[_itemIdx[_scheduleIdx]], 10 - _startDay, _itemIdx[_scheduleIdx]);
+			_startDay = 10;
+		}
+		else if (_startDay < 20)
+		{
+			_education->init(_sm->getVTeach()[_itemIdx[_scheduleIdx]], 20 - _startDay, _itemIdx[_scheduleIdx]);
+			_startDay = 20;
+		}
 		else
-			_education->init(_sm->getVTeach()[_itemIdx[_scheduleIdx]], 10, _itemIdx[_scheduleIdx]);
+		{
+			if (_startDay == 20)
+			{
+				if (_scheduleIdx == 2 && (_mon == 1 || _mon == 3 || _mon == 5 || _mon == 7 || _mon == 8 || _mon == 10 || _mon == 12))
+					_education->init(_sm->getVTeach()[_itemIdx[_scheduleIdx]], 31 - _startDay, _itemIdx[_scheduleIdx]);
+				else if (_scheduleIdx == 2 && _mon == 2)
+					_education->init(_sm->getVTeach()[_itemIdx[_scheduleIdx]], 28 - _startDay, _itemIdx[_scheduleIdx]);
+				else
+					_education->init(_sm->getVTeach()[_itemIdx[_scheduleIdx]], 30 - _startDay, _itemIdx[_scheduleIdx]);
+			}
+			else
+			{
+				if (_scheduleIdx == 2 && (_mon == 1 || _mon == 3 || _mon == 5 || _mon == 7 || _mon == 8 || _mon == 10 || _mon == 12))
+					_education->init(_sm->getVTeach()[_itemIdx[_scheduleIdx]], 31 - _startDay + 1, _itemIdx[_scheduleIdx]);
+				else if (_scheduleIdx == 2 && _mon == 2)
+					_education->init(_sm->getVTeach()[_itemIdx[_scheduleIdx]], 28 - _startDay + 1, _itemIdx[_scheduleIdx]);
+				else
+					_education->init(_sm->getVTeach()[_itemIdx[_scheduleIdx]], 30 - _startDay + 1, _itemIdx[_scheduleIdx]);
+
+			}
+		}
+		_curSound = "study";
+		SOUNDMANAGER->play(_curSound);
 	}
 	else if (_scheduleWeek[_scheduleIdx] == "work")
 	{
-		if (_scheduleIdx == 2 && (_mon == 1 || _mon == 3 || _mon == 5 || _mon == 7 || _mon == 8 || _mon == 10 || _mon == 12))
-			_work->init(_sm->getVWork()[_itemIdx[_scheduleIdx]], 11, _itemIdx[_scheduleIdx]);
-		else if (_scheduleIdx == 2 && _mon == 2)
-			_work->init(_sm->getVWork()[_itemIdx[_scheduleIdx]], 8, _itemIdx[_scheduleIdx]);
+		if (_startDay < 10)
+		{
+			_work->init(_sm->getVWork()[_itemIdx[_scheduleIdx]], 10 - _startDay, _itemIdx[_scheduleIdx]);
+			_startDay = 10;
+		}
+		else if (_startDay < 20)
+		{
+			_work->init(_sm->getVWork()[_itemIdx[_scheduleIdx]], 20 - _startDay, _itemIdx[_scheduleIdx]);
+			_startDay = 20;
+		}
 		else
-			_work->init(_sm->getVWork()[_itemIdx[_scheduleIdx]], 10, _itemIdx[_scheduleIdx]);
+		{
+			if (_scheduleIdx == 2 && (_mon == 1 || _mon == 3 || _mon == 5 || _mon == 7 || _mon == 8 || _mon == 10 || _mon == 12))
+				_work->init(_sm->getVWork()[_itemIdx[_scheduleIdx]], 31 - _startDay, _itemIdx[_scheduleIdx]);
+			else if (_scheduleIdx == 2 && _mon == 2)
+				_work->init(_sm->getVWork()[_itemIdx[_scheduleIdx]], 28 - _startDay, _itemIdx[_scheduleIdx]);
+			else
+				_work->init(_sm->getVWork()[_itemIdx[_scheduleIdx]], 30 - _startDay, _itemIdx[_scheduleIdx]);
+		}
+		_curSound = "arbeit";
+		SOUNDMANAGER->play(_curSound);
 	}
 	else if (_scheduleWeek[_scheduleIdx] == "fight")
 	{
@@ -1010,13 +1165,25 @@ void scheduleScene::setSchedule()
 	}
 	else if (_scheduleWeek[_scheduleIdx] == "relax")
 	{
-		if (_scheduleIdx == 2 && (_mon == 1 || _mon == 3 || _mon == 5 || _mon == 7 || _mon == 8 || _mon == 10 || _mon == 12))
-			_relax->init(_sm->getVRelax()[_itemIdx[_scheduleIdx]], 11, _itemIdx[_scheduleIdx]);
-		else if (_scheduleIdx == 2 && _mon == 2)
-			_relax->init(_sm->getVRelax()[_itemIdx[_scheduleIdx]], 8, _itemIdx[_scheduleIdx]);
+		if (_startDay < 10)
+		{
+			_relax->init(_sm->getVRelax()[_itemIdx[_scheduleIdx]], 10 - _startDay, _itemIdx[_scheduleIdx]);
+			_startDay = 10;
+		}
+		else if (_startDay < 20)
+		{
+			_relax->init(_sm->getVRelax()[_itemIdx[_scheduleIdx]], 20 - _startDay, _itemIdx[_scheduleIdx]);
+			_startDay = 20;
+		}
 		else
-			_relax->init(_sm->getVRelax()[_itemIdx[_scheduleIdx]], 10, _itemIdx[_scheduleIdx]);
-
+		{
+			if (_scheduleIdx == 2 && (_mon == 1 || _mon == 3 || _mon == 5 || _mon == 7 || _mon == 8 || _mon == 10 || _mon == 12))
+				_relax->init(_sm->getVRelax()[_itemIdx[_scheduleIdx]], 31 - _startDay, _itemIdx[_scheduleIdx]);
+			else if (_scheduleIdx == 2 && _mon == 2)
+				_relax->init(_sm->getVRelax()[_itemIdx[_scheduleIdx]], 28 - _startDay, _itemIdx[_scheduleIdx]);
+			else
+				_relax->init(_sm->getVRelax()[_itemIdx[_scheduleIdx]], 30 - _startDay, _itemIdx[_scheduleIdx]);
+		}
 	}
 }
 

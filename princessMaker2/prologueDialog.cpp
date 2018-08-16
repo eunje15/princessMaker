@@ -12,6 +12,7 @@ prologueDialog::~prologueDialog()
 
 HRESULT prologueDialog::init()
 {
+	SOUNDMANAGER->play("prologue1");
 	_princess = SCENEMANAGER->getPrincessAddress();
 	_scene = SCENE_WAR;
 	_frameY = 0;
@@ -40,6 +41,14 @@ void prologueDialog::update()
 				if (_frameY == 2 || _frameY == 4 || _frameY == 8 || _frameY == 10)
 				{
 					_progress = PRO_DIALOG_FIN;
+					if (_frameY == 4)
+					{
+						if (SOUNDMANAGER->isPlaySound("prologue1"))
+						{
+							SOUNDMANAGER->stop("prologue1");
+							SOUNDMANAGER->play("prologue2");
+						}
+					}
 					break;
 				}
 				changePrintDialog();
@@ -70,7 +79,7 @@ void prologueDialog::update()
 			break;
 			case PRO_DIALOG_ING:
 				_count++;
-				if (!(_count % 120)) //120이 기본
+				if (!(_count % 60)) //120이 기본
 				{
 					_count = 0;
 					if (_isRender) _progress = PRO_DIALOG_FIN;
@@ -190,6 +199,7 @@ void prologueDialog::update()
 			}
 			break;
 		case SCENE_PRINCESS:
+			SOUNDMANAGER->stop("prologue2");
 			SCENEMANAGER->changeScene("공주씬");
 			setData();
 			break;

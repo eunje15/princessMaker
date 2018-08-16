@@ -53,7 +53,7 @@ HRESULT educationScene::init(status* education, int dayCount, int idx)
 	_frameX = _startF;
 	_fin = _goldOk = _eduFin = _noGold = _resultDialog = false;
 	_statusProgress = STATUS_START;
-	string str = _princess->getInfo().name + "는 오늘부터 " + _eduName + "을 배웁니다";
+	string str = _princess->getInfo().name + "은/는 오늘부터 " + _eduName + "을 배웁니다";
 	setDialog(str);
 	_dialogX = 20, _dialogY = WINSIZEY - 180;
 	_dialogIdx = 0, _dialogType = DIALOG_ING;

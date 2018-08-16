@@ -14,20 +14,20 @@ princess::~princess()
 HRESULT princess::init()
 {
 		//임시로 넣어놓음
-		_info.firstName = "윤";
-		_info.name = "딸래미";
-		_info.year = 1200, _info.mon = 1, _info.day = 1, _info.dayOfWeek = 0;
+		_info.firstName = "주";
+		_info.name = "효원";
+		_info.year = 1200, _info.mon = 9, _info.day = 22, _info.dayOfWeek = 3;
 		_info.blood = BLOOD_A;
 		_info.strBlood = "A";
-		_info.age = 12;
+		_info.age = 10;
 		_info.dietType = "무리하지 않는다";
 		_info.gold = 1000000;
 
-		_bodyInfo.height = 149.16;
-		_bodyInfo.weight = 41.90;
-		_bodyInfo.bast = 74.57;
-		_bodyInfo.waist = 55.82;
-		_bodyInfo.hip = 77.71;
+		_bodyInfo.height = 151.98;
+		_bodyInfo.weight = 46.63;
+		_bodyInfo.bast = 75.92;
+		_bodyInfo.waist = 55.22;
+		_bodyInfo.hip = 75.77;
 		_bodyInfo.clothesType = 0; //평상복
 
 		_date.name = _info.name;

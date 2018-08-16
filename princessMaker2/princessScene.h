@@ -48,6 +48,7 @@ private:
 	string _storeDialog;
 	item* _selectItem[2];
 	bool _weaponOk[2];
+	string _curSound;
 
 	weaponStore* _weaponStore;
 	clothesStore* _clothesStore;
@@ -71,6 +72,7 @@ public:
 	HRESULT init();
 	void update();
 	void render();
+	void changeSound();
 	void setInfo();
 	void setStat();
 	void setDadTalk();
