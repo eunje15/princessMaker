@@ -61,9 +61,9 @@ void dataInput::render()
 			break;
 	}
 
-	char str[128];
-	sprintf_s(str, "%d %d", _ptMouse.x, _ptMouse.y);
-	TextOut(DC, 100, 100, str, strlen(str));
+	//char str[128];
+	//sprintf_s(str, "%d %d", _ptMouse.x, _ptMouse.y);
+	//TextOut(DC, 100, 100, str, strlen(str));
 }
 
 void dataInput::release()
@@ -167,6 +167,7 @@ void dataInput::changeMode()
 			if (_princessName.size() > 8)
 				_princessName = _princessName.substr(0, 7);
 			_princessInfo.name = _princessName;
+			_princessInfo.firstName = _dadName;
 			setCal();
 			break;
 		case PROLOGUE_CAL:

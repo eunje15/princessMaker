@@ -248,6 +248,8 @@ void startScene::setSaveTitle(bool isSave, int idx)
 			ReadFile(file, &date[i], sizeof(tagDate), &load, NULL);
 		}
 	}
+	if (count == 48)
+		count = 0;
 	CloseHandle(file);
 
 	tagDate temp = { idx, _princess->getInfo().name, _princess->getInfo().firstName, _princess->getDate().year, _princess->getDate().mon,_princess->getDate().day, _princess->getDate().dayOfWeek };

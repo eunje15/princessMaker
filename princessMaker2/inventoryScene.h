@@ -32,7 +32,7 @@ public:
 
 	void setDialog(string dialog);
 
-	void changeStatus(string name, int value);
+	void changeStatus(string name, float value);
 
 	bool dialogRender();
 

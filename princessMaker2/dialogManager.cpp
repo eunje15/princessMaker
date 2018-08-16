@@ -35,6 +35,9 @@ void dialogManager::setDialog(string str, int speed)
 	_str = str;
 	_idx = _count = 0;
 	_speed = speed;
+	
+	//너무느림..
+	//_speed = 2;
 }
 
 string dialogManager::getCurrentDialog()

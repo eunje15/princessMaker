@@ -14,6 +14,7 @@ princessScene::~princessScene()
 HRESULT princessScene::init()
 {
 	_princess = SCENEMANAGER->getPrincessAddress();
+	_princess->setAge(_princess->getInfo().age);
 
 	_im = new itemManager;
 	_im->init();
@@ -144,8 +145,8 @@ HRESULT princessScene::init()
 	_scheduleScene = new scheduleScene;
 	_scheduleScene->setStatusManagerAddressLink(_sm);
 
-	if (_princess->getStatus().hp < 200)
-		_princess->getStatusP()->hp = 200;
+//	if (_princess->getStatus().hp < 200)
+//		_princess->getStatusP()->hp = 200;
 	return S_OK;
 }
 
@@ -194,6 +195,7 @@ void princessScene::update()
 						setStringStatus();
 						break;
 					case 3:
+						_dialogSelect = false;
 						_menuType = SELECT_INFO;
 						setBodyInfo();
 						break;
@@ -330,6 +332,7 @@ void princessScene::update()
 		if (_saveLoadScene->getFin())
 		{
 			_menuType = SELECT_NONE;
+			
 			setLoadData();
 		}
 	}
@@ -468,11 +471,11 @@ void princessScene::render()
 		_scheduleScene->render();
 		break;
 	}
-	char str[128];
+	//char str[128];
 	SetBkMode(DC, TRANSPARENT);
 	SetTextColor(DC, RGB(255, 255, 255));
-	sprintf_s(str, "%d %d", _ptMouse.x, _ptMouse.y);
-	TextOut(DC, 50, 50, str, strlen(str));
+	//sprintf_s(str, "%d %d", _ptMouse.x, _ptMouse.y);
+	//TextOut(DC, 50, 50, str, strlen(str));
 }
 
 void princessScene::setInfo()
@@ -634,7 +637,8 @@ void princessScene::infoRender()
 	IMAGEMANAGER->findImage("info1Back")->render(DC, 28, 103);
 	IMAGEMANAGER->findImage("info2Back")->render(DC, 28, 106 + IMAGEMANAGER->findImage("info1Back")->getHeight());
 	IMAGEMANAGER->findImage("info3Back")->render(DC, WINSIZEX - 260, 105 + IMAGEMANAGER->findImage("info1Back")->getHeight());
-	IMAGEMANAGER->findImage("info4Back")->render(DC, WINSIZEX - 285, 228 + IMAGEMANAGER->findImage("info1Back")->getHeight());
+	//IMAGEMANAGER->findImage("info4Back")->render(DC, WINSIZEX - 285, 228 + IMAGEMANAGER->findImage("info1Back")->getHeight());
+	IMAGEMANAGER->findImage("wideBack")->render(DC, WINSIZEX - 405, 228 + IMAGEMANAGER->findImage("info1Back")->getHeight());
 
 	HFONT font, oldFont;
 	font = CreateFont(20, 0, 0, 0, 400, 0, 0, 0, HANGEUL_CHARSET, 0, 0, 0, 0, TEXT("蹈框眉"));
@@ -702,11 +706,11 @@ void princessScene::infoRender()
 	}
 
 	//info4
-	TextOut(DC, WINSIZEX - 270, 425, "公扁", strlen("公扁"));
+	TextOut(DC, WINSIZEX - 395, 425, "公扁", strlen("公扁"));
 	if (_weaponOk[1])
 	{
-		IMAGEMANAGER->findImage("weapon")->frameRender(DC, WINSIZEX - 240, 145, _selectItem[1]->getFrameX(), 0);
-		TextOut(DC, WINSIZEX - 200, 145, _selectItem[1]->getName().c_str(), strlen(_selectItem[1]->getName().c_str()));
+		IMAGEMANAGER->findImage("weapon")->frameRender(DC, WINSIZEX - 355, 420, _selectItem[1]->getFrameX(), 0);
+		TextOut(DC, WINSIZEX - 315, 420, _selectItem[1]->getName().c_str(), strlen(_selectItem[1]->getName().c_str()));
 		int strSize = 0;
 		for (int i = 0; i < _selectItem[1]->getProperty().size(); i++)
 		{
@@ -714,24 +718,24 @@ void princessScene::infoRender()
 			if (_selectItem[1]->getProperty()[i].second > 0)
 				str += "+";
 			str += to_string((int)_selectItem[1]->getProperty()[i].second) + " ";
-			TextOut(DC, WINSIZEX - 200 + strSize, 170, str.c_str(), strlen(str.c_str()));
-			strSize += strlen(str.c_str()) + 5;
+			TextOut(DC, WINSIZEX - 315 + strSize*6, 445, str.c_str(), strlen(str.c_str()));
+			strSize += strlen(str.c_str()) + 6;
 		}
 	}
-	TextOut(DC, WINSIZEX - 270, 470, "规绢备", strlen("规绢备"));
+	TextOut(DC, WINSIZEX - 395, 480, "规绢备", strlen("规绢备"));
 	if (_weaponOk[0])
 	{
-		IMAGEMANAGER->findImage("weapon")->frameRender(DC, WINSIZEX - 240, 145, _selectItem[0]->getFrameX(), 0);
-		TextOut(DC, WINSIZEX - 200, 145, _selectItem[0]->getName().c_str(), strlen(_selectItem[0]->getName().c_str()));
+		IMAGEMANAGER->findImage("weapon")->frameRender(DC, WINSIZEX - 335, 475, _selectItem[0]->getFrameX(), 0);
+		TextOut(DC, WINSIZEX - 295, 475, _selectItem[0]->getName().c_str(), strlen(_selectItem[0]->getName().c_str()));
 		int strSize = 0;
 		for (int i = 0; i < _selectItem[0]->getProperty().size(); i++)
 		{
 			string str = _selectItem[0]->getProperty()[i].first;
 			if (_selectItem[0]->getProperty()[i].second > 0)
 				str += "+";
-			str += to_string((int)_selectItem[1]->getProperty()[i].second) + " ";
-			TextOut(DC, WINSIZEX - 200 + strSize, 170, str.c_str(), strlen(str.c_str()));
-			strSize += strlen(str.c_str()) + 5;
+			str += to_string((int)_selectItem[0]->getProperty()[i].second) + " ";
+			TextOut(DC, WINSIZEX - 295 + strSize*6, 500, str.c_str(), strlen(str.c_str()));
+			strSize += strlen(str.c_str()) + 6;
 		}
 	}
 	SelectObject(DC, oldFont);
@@ -927,8 +931,11 @@ void princessScene::setNextMonth()
 		_year++;
 		_yearImg.frameY = _year - 1200;
 		_princess->setYear(_year);
+		_princess->setAge(_princess->getInfo().age + 1);
+		_princess->getInfoP()->age++;
 		_princess->getBodyInfoP()->waist -= 0.3f;
 	}
+
 	if (_mon == 1 || _mon == 3 || _mon == 5 || _mon == 7 || _mon == 8 || _mon == 10 || _mon == 12)
 		_finDay = 31;
 	else if (_mon == 2)
@@ -1015,6 +1022,11 @@ void princessScene::setNextMonth()
 	_princess->setSeason((int)_season);
 	setStat();
 	setBodyInfo();
+
+	if (_princess->getStatus().stress <= 0)
+		_princess->getDateP()->faceType = PRINCESS_NOSTRESS;
+	else
+		_princess->getDateP()->faceType = PRINCESS_NORMAL;
 }
 
 void princessScene::setLoadData()
@@ -1031,6 +1043,18 @@ void princessScene::setLoadData()
 	setStat();
 	setBodyInfo();
 	_flower.frameX = (int)_princess->getSeason();
+	if (_mon == 1 || _mon == 3 || _mon == 5 || _mon == 7 || _mon == 8 || _mon == 10 || _mon == 12)
+	{
+		if(_day != 31)
+			_scheduleOk = false;
+	}
+	else if (_mon == 2 && _day != 28)
+		_scheduleOk = false;
+	else
+	{
+		if(_day != 30)
+			_scheduleOk = false;
+	}
 }
 
 void princessScene::dadTalkRender()

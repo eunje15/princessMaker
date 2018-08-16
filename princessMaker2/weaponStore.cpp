@@ -22,7 +22,7 @@ HRESULT weaponStore::init(vector<item*> vWeapon, vector<item*> vArmor)
 	setDialog("「어서오세요. 무기도 방어구도 좋은 것들만 모여 있습니다」");
 	_dialogIdx = 0;
 	_dialogType = DIALOG_ING;
-	_type = WEAPON_NONE;
+	_type = WEAPON_FIN;
 	_fin = false;
 
 	for (int i = 0; i < 2; i++)
@@ -181,6 +181,8 @@ void weaponStore::update()
 					{
 						_type = WEAPON_SELECT;
 						_selectItem = false;
+						setDialog("안사신다구요?");
+						_dialogIdx = 0;
 					}
 					else
 					{
@@ -200,36 +202,72 @@ void weaponStore::render()
 	IMAGEMANAGER->findImage("frame")->render(DC, 20, 295);
 	_npc.img->frameRender(DC, 30, 305, _npc.frameX, _npc.frameY);
 	IMAGEMANAGER->findImage("status4Back")->render(DC, 170, 300);
-	if (dialogRender())
-	{
-		for (int i = 0; i < _vDialog.size(); i++)
-		{
-			TextOut(DC, 180, 310 + i * 30, _vDialog[i].c_str(), strlen(_vDialog[i].c_str()));
-		}
+	
 		switch (_type)
 		{
 		case WEAPON_FIN:
-			IMAGEMANAGER->findImage("2Back")->render(DC, 600, 280);
-			for (int i = 0; i < 2; i++)
+			if (dialogRender())
 			{
-				if (_chooseBox[i].isSelected)
+				for (int i = 0; i < _vDialog.size(); i++)
 				{
-					HBRUSH brush, oldBrush;
-					brush = CreateSolidBrush(RGB(43, 0, 0));
-					oldBrush = (HBRUSH)SelectObject(DC, brush);
-					FillRect(DC, &_chooseBox[i].rc, brush);
-					SelectObject(DC, oldBrush);
-					DeleteObject(brush);
+					TextOut(DC, 180, 310 + i * 30, _vDialog[i].c_str(), strlen(_vDialog[i].c_str()));
 				}
-				TextOut(DC, _chooseBox[i].rc.left + 2, _chooseBox[i].rc.top + 5, _chooseBox[i].str.c_str(), strlen(_chooseBox[i].str.c_str()));
+				IMAGEMANAGER->findImage("2Back")->render(DC, 600, 280);
+				for (int i = 0; i < 2; i++)
+				{
+					if (_chooseBox[i].isSelected)
+					{
+						HBRUSH brush, oldBrush;
+						brush = CreateSolidBrush(RGB(43, 0, 0));
+						oldBrush = (HBRUSH)SelectObject(DC, brush);
+						FillRect(DC, &_chooseBox[i].rc, brush);
+						SelectObject(DC, oldBrush);
+						DeleteObject(brush);
+					}
+					TextOut(DC, _chooseBox[i].rc.left + 2, _chooseBox[i].rc.top + 5, _chooseBox[i].str.c_str(), strlen(_chooseBox[i].str.c_str()));
+				}
 			}
 			break;
 		case WEAPON_SELECT:
+			if (dialogRender())
+			{
+				for (int i = 0; i < _vDialog.size(); i++)
+				{
+					TextOut(DC, 180, 310 + i * 30, _vDialog[i].c_str(), strlen(_vDialog[i].c_str()));
+				}
+				for (int i = 0; i < 12; i++)
+				{
+					if (_selectItem && !_itemImg[i].data.isChoose) continue;
+					//Rectangle(DC, _itemImg[i].data.rc.left, _itemImg[i].data.rc.top, _itemImg[i].data.rc.right, _itemImg[i].data.rc.bottom);
+					_itemImg[i].img->frameRender(DC, _itemImg[i].data.rc.left, _itemImg[i].data.rc.top, _itemImg[i].frameX, 0);
+					_vItem[i]->render();
+					TextOut(DC, _vItem[i]->getX() + 45, _vItem[i]->getY() + 5, _vItem[i]->getName().c_str(), strlen(_vItem[i]->getName().c_str()));
+					string gold = to_string(_vItem[i]->getPrice()) + "G";
+					TextOut(DC, _vItem[i]->getX() + 45, _vItem[i]->getY() + 25, gold.c_str(), strlen(gold.c_str()));
+
+					vector<pair<string, float>> vTemp = _vItem[i]->getProperty();
+					for (int j = 0; j < vTemp.size(); j++)
+					{
+						TextOut(DC, _vItem[i]->getX() + j * 80, _vItem[i]->getY() + 45, vTemp[j].first.c_str(), strlen(vTemp[j].first.c_str()));
+						if (vTemp[j].second > 0)
+							TextOut(DC, _vItem[i]->getX() + vTemp[j].first.size() * 8 + j * 80, _vItem[i]->getY() + 45, "+", strlen("+"));
+						char stat[128];
+						sprintf_s(stat, "%d", (int)vTemp[j].second);
+						TextOut(DC, _vItem[i]->getX() + vTemp[j].first.size() * 8 + 10 + j * 80, _vItem[i]->getY() + 45, stat, strlen(stat));
+					}
+
+					_quitImg.img->frameRender(DC, 444, 393, _quitImg.frameX, 0);
+
+					TextOut(DC, _quitImg.data.rc.left + 30, _quitImg.data.rc.top + 10, "관둔다", strlen("관둔다"));
+				}
+			}
+			break;
+		case WEAPON_CLICK:
 			for (int i = 0; i < 12; i++)
 			{
 				if (_selectItem && !_itemImg[i].data.isChoose) continue;
 				//Rectangle(DC, _itemImg[i].data.rc.left, _itemImg[i].data.rc.top, _itemImg[i].data.rc.right, _itemImg[i].data.rc.bottom);
-				_itemImg[i].img->frameRender(DC, _itemImg[i].data.rc.left, _itemImg[i].data.rc.top,_itemImg[i].frameX, 0);
+				_itemImg[i].img->frameRender(DC, _itemImg[i].data.rc.left, _itemImg[i].data.rc.top, _itemImg[i].frameX, 0);
 				_vItem[i]->render();
 				TextOut(DC, _vItem[i]->getX() + 45, _vItem[i]->getY() + 5, _vItem[i]->getName().c_str(), strlen(_vItem[i]->getName().c_str()));
 				string gold = to_string(_vItem[i]->getPrice()) + "G";
@@ -239,38 +277,39 @@ void weaponStore::render()
 				for (int j = 0; j < vTemp.size(); j++)
 				{
 					TextOut(DC, _vItem[i]->getX() + j * 80, _vItem[i]->getY() + 45, vTemp[j].first.c_str(), strlen(vTemp[j].first.c_str()));
-					if(vTemp[j].second > 0)
-						TextOut(DC, _vItem[i]->getX() + vTemp[j].first.size()*8 + j * 80, _vItem[i]->getY() + 45, "+", strlen("+"));
+					if (vTemp[j].second > 0)
+						TextOut(DC, _vItem[i]->getX() + vTemp[j].first.size() * 8 + j * 80, _vItem[i]->getY() + 45, "+", strlen("+"));
 					char stat[128];
 					sprintf_s(stat, "%d", (int)vTemp[j].second);
 					TextOut(DC, _vItem[i]->getX() + vTemp[j].first.size() * 8 + 10 + j * 80, _vItem[i]->getY() + 45, stat, strlen(stat));
 				}
-
-				_quitImg.img->frameRender(DC, 444, 393, _quitImg.frameX, 0);
-
-				TextOut(DC, _quitImg.data.rc.left + 30, _quitImg.data.rc.top + 10, "관둔다", strlen("관둔다"));
 			}
-			break;
-		case WEAPON_CLICK:
-			IMAGEMANAGER->findImage("3Back")->render(DC, 600, 280);
-			for (int i = 0; i < 3; i++)
+			//break;
+			if (dialogRender())
 			{
-				//Rectangle(DC, _buyBox[i].rc.left, _buyBox[i].rc.top, _buyBox[i].rc.right, _buyBox[i].rc.bottom);
-				if (_buyBox[i].isSelected)
+				for (int i = 0; i < _vDialog.size(); i++)
 				{
-					HBRUSH brush, oldBrush;
-					brush = CreateSolidBrush(RGB(43, 0, 0));
-					oldBrush = (HBRUSH)SelectObject(DC, brush);
-					FillRect(DC, &_buyBox[i].rc, brush);
-					SelectObject(DC, oldBrush);
-					DeleteObject(brush);
+					TextOut(DC, 180, 310 + i * 30, _vDialog[i].c_str(), strlen(_vDialog[i].c_str()));
 				}
-				TextOut(DC, _buyBox[i].rc.left + 10, _buyBox[i].rc.top + 5, _buyBox[i].str.c_str(), strlen(_buyBox[i].str.c_str()));
+				IMAGEMANAGER->findImage("3Back")->render(DC, 600, 280);
+				for (int i = 0; i < 3; i++)
+				{
+					//Rectangle(DC, _buyBox[i].rc.left, _buyBox[i].rc.top, _buyBox[i].rc.right, _buyBox[i].rc.bottom);
+					if (_buyBox[i].isSelected)
+					{
+						HBRUSH brush, oldBrush;
+						brush = CreateSolidBrush(RGB(43, 0, 0));
+						oldBrush = (HBRUSH)SelectObject(DC, brush);
+						FillRect(DC, &_buyBox[i].rc, brush);
+						SelectObject(DC, oldBrush);
+						DeleteObject(brush);
+					}
+					TextOut(DC, _buyBox[i].rc.left + 10, _buyBox[i].rc.top + 5, _buyBox[i].str.c_str(), strlen(_buyBox[i].str.c_str()));
+				}
 			}
 			break;
 		}
 	}
-}
 
 void weaponStore::release()
 {

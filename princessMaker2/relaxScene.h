@@ -8,7 +8,7 @@ class princess;
 class relaxScene : public gameNode
 {
 private:
-	enum RELAX_STATUS { RELAX_SELECT, RELAX_ING, RELAX_OK, RELAX_FAIL, RELAX_FIN };
+	enum RELAX_STATUS { RELAX_SELECT, RELAX_ING, RELAX_OK, RELAX_FAIL, RELAX_FIN, RELAX_NONE };
 	enum RELAX_TYPE { RELAX_FREE, RELAX_VACATION };
 
 private:

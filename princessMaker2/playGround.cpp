@@ -29,8 +29,8 @@ HRESULT playGround::init(void)
 	SCENEMANAGER->addScene("공주씬", new princessScene);
 	SCENEMANAGER->addScene("스타트씬", new startScene);
 	
-	SCENEMANAGER->changeScene("공주씬");
-	_str = TXTDATA->txtLoadCsv("dialog/별자리능력치.csv", "처녀자리");
+	SCENEMANAGER->changeScene("스타트씬");
+	//_str = TXTDATA->txtLoadCsv("dialog/별자리능력치.csv", "처녀자리");
 
 	/*
 	SCENEMANAGER->addScene("테스트", new testClass);
@@ -96,8 +96,14 @@ void playGround::render(void)
 		PatBlt(getMemDC(), 0, 0, WINSIZEX, WINSIZEY, WHITENESS);
 	//////////////////////////////////////////////////////////
 
+	//HFONT font, oldFont;
+	//font = CreateFont(18, 0, 0, 0, 400, 0, 0, 0, HANGEUL_CHARSET, 0, 0, 0, 0, TEXT("돋움체"));
+	//oldFont = (HFONT)SelectObject(DC, font);
+
 	SCENEMANAGER->render();
 
+	//SelectObject(DC, oldFont);
+	//DeleteObject(font);
 	//IMAGEMANAGER->findImage("back")->render(DC);
 	//IMAGEMANAGER->findImage("body10")->frameRender(DC, 50, 50, 0, 2);
 	/*char str[128];

@@ -564,7 +564,7 @@ void scheduleScene::update()
 					{
 						//_fin = true;
 						_type = SCHEDULE_GO;
-						_scheduleIdx = 0;
+						_scheduleIdx = -1;
 						_select = false;
 
 						string str;
@@ -622,12 +622,12 @@ void scheduleScene::update()
 				{
 					if (_progress == SCHEDULE_ING)
 					{
-						_scheduleIdx++;
 						_progress = SCHEDULE_FIN;
+						/*_scheduleIdx++;
 						if (_scheduleIdx > 2)
 						{
 							_fin = true;
-						}
+						}*/
 					}
 				}
 			}
@@ -638,12 +638,12 @@ void scheduleScene::update()
 				{
 					if (_progress == SCHEDULE_ING)
 					{
-						_scheduleIdx++;
 						_progress = SCHEDULE_FIN;
-						if (_scheduleIdx > 2)
-						{
-							_fin = true;
-						}
+						//_scheduleIdx++;
+						//if (_scheduleIdx > 2)
+						//{
+						//	_fin = true;
+						//}
 					}
 				}
 			}
@@ -654,12 +654,12 @@ void scheduleScene::update()
 				{
 					if (_progress == SCHEDULE_ING)
 					{
-						_scheduleIdx++;
 						_progress = SCHEDULE_FIN;
+						/*_scheduleIdx++;
 						if (_scheduleIdx > 2)
 						{
 							_fin = true;
-						}
+						}*/
 					}
 				}
 			}
@@ -673,22 +673,33 @@ void scheduleScene::update()
 		if (_type == SCHEDULE_NONE) _fin = true;
 		_type = SCHEDULE_NONE;
 		string str = "이번달 딸의 예정은?";
-		if (_scheduleIdx == 0)
-			str += "(첫번째)";
-		else if (_scheduleIdx == 1)
-			str += "(두번째)";
-		else if (_scheduleIdx == 2)
-			str += "(세번째)";
-		setDialog(str);
-		_select = false;
-		_dialogType = DIALOG_FIN;
-		for (int i = 0; i < 3; i++)
+
+		/*for (int i = 0; i < 3; i++)
 		{
 			_scheduleWeek[i] = "";
-		}
-		for (int i = 0; i < 42; i++)
+		}*/
+		if (_scheduleIdx > 0)
 		{
-			_calImg[i].data.isSelected = false;
+			_scheduleWeek[_scheduleIdx] = "";
+
+			/*for (int i = 0; i < 42; i++)
+			{
+				_calImg[i].data.isSelected = false;
+			}*/
+			for (int i = 41; i > _scheduleIdx * 10; i--)
+			{
+				_calImg[i].data.isSelected = false;
+			}
+
+			if (_scheduleIdx == 0)
+				str += "(첫번째)";
+			else if (_scheduleIdx == 1)
+				str += "(두번째)";
+			else if (_scheduleIdx == 2)
+				str += "(세번째)";
+			setDialog(str);
+			_select = false;
+			_dialogType = DIALOG_FIN;
 		}
 	}
 }
@@ -714,6 +725,18 @@ void scheduleScene::render()
 			{
 				TextOut(DC, 20, 440 + i * 30, _vDialog[i].c_str(), strlen(_vDialog[i].c_str()));
 			}
+
+		//	if (!_scheduleStart)
+			{
+				if (_scheduleIdx == 3)
+				{
+					_type = SCHEDULE_OK;
+					_selectBox[0].str = "스케줄을 실행한다";
+					setDialog("이대로 스케줄을 진행하시겠습니까?");
+					_dialogIdx = 0;
+					_dialogType = DIALOG_FIN;
+				}
+			}
 		}
 		switch (_type)
 		{
@@ -725,9 +748,9 @@ void scheduleScene::render()
 				//IMAGEMANAGER->findImage("알바액자")->render(DC, 10, 430);
 				if (dialogRender())
 				{
-					for (int i = 0; i < _vDialog.size(); i++)
+					for (int j = 0; j < _vDialog.size(); j++)
 					{
-						TextOut(DC, 20, 440 + i * 30, _vDialog[i].c_str(), strlen(_vDialog[i].c_str()));
+						TextOut(DC, 20, 440 + j * 30, _vDialog[j].c_str(), strlen(_vDialog[j].c_str()));
 					}
 				}
 				if (_chooseBox[i].isSelected)
@@ -942,13 +965,7 @@ void scheduleScene::render()
 			}
 			IMAGEMANAGER->findImage("smallDay")->frameRender(DC, _calImg[i].x, _calImg[i].y, 0, atoi(_calImg[i].data.str.c_str()) - 1);
 		}
-		if (_scheduleIdx == 3)
-		{
-			_type = SCHEDULE_OK;
-			_selectBox[0].str = "스케줄을 실행한다";
-			setDialog("이대로 스케줄을 진행하시겠습니까?");
-			_dialogType = DIALOG_FIN;
-		}
+		
 	}
 }
 
@@ -961,6 +978,13 @@ void scheduleScene::setSchedule()
 	if (_progress != SCHEDULE_START) return;
 
 	_progress = SCHEDULE_ING;
+
+	_scheduleIdx++;
+	if (_scheduleIdx > 2)
+	{
+		_fin = true;
+		return;
+	}
 
 	if (_scheduleWeek[_scheduleIdx] == "teach")
 	{

@@ -21,7 +21,7 @@ HRESULT relaxScene::init(relaxStatus * relax, int dayCount, int idx)
 		_princessFrameX = 0;
 
 	_relax = relax;
-	_status = RELAX_SELECT;
+	_status = RELAX_NONE;
 	if (idx == 0)
 		_type = RELAX_FREE;
 	else
@@ -55,9 +55,8 @@ HRESULT relaxScene::init(relaxStatus * relax, int dayCount, int idx)
 		_selectBox[0].str = "»ê";
 		_selectBox[1].str = "¹Ù´Ù";
 	}
-	_dialogX = 20, _dialogY = 440;
-	_dialogIdx = _dayIdx = 0;
-	_dialogType = DIALOG_ING;
+	
+	_dialogType = DIALOG_FIN;
 
 	_fin = _moneyOk = false;
 	_princessAnswer = -1;
@@ -69,6 +68,12 @@ void relaxScene::update()
 	if (_dialogType == DIALOG_ING) return;
 	switch (_status)
 	{
+	case RELAX_NONE:
+		_status = RELAX_SELECT;
+		_dialogX = 20, _dialogY = 440;
+		_dialogIdx = _dayIdx = 0;
+		_dialogType = DIALOG_ING;
+		break;
 	case RELAX_SELECT:
 		for (int i = 0; i < 2; i++)
 		{
@@ -181,6 +186,7 @@ void relaxScene::update()
 
 void relaxScene::render()
 {
+	if (_fin || _status == RELAX_NONE) return;
 	switch (_status)
 	{
 	case RELAX_SELECT:
@@ -321,7 +327,6 @@ void relaxScene::render()
 		}
 		else
 		{
-
 				IMAGEMANAGER->findImage("black")->render(DC);
 				_back->frameRender(DC, 0, 100, _back->getFrameX(), _back->getFrameY());
 				IMAGEMANAGER->findImage("cal")->render(DC);
@@ -418,6 +423,11 @@ void relaxScene::setRelax(int idx)
 				initStatus(0);
 				_status = RELAX_FAIL;
 			}
+		}
+		else
+		{
+			initStatus(0);
+			_status = RELAX_OK;
 		}
 	}
 	else

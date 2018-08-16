@@ -42,6 +42,9 @@ public:
 	tagBody getBodyInfo() { return _bodyInfo; }
 	tagBody* getBodyInfoP() { return &_bodyInfo; }
 
+	tagDate getDate() { return _date; }
+	tagDate* getDateP() { return &_date; }
+
 	string getDadName() { return _info.firstName; }
 
 	void setGold(int gold) { _info.gold += gold; }
@@ -59,12 +62,15 @@ public:
 	void setVItemName(vector<string> vName) { _vItemName = vName; }
 	bool setItem(item* newItem);
 	void setDataItem(vector<item*> vTotal);
+	void deleteVItem(int idx);
 
-	tagDate getDate() { return _date; }
+	void changeStatus(string name, float value);
+
 	int getDayOfWeek() { return _date.dayOfWeek; }
 	int getDay() { return _date.day; }
 
 	void setDate(tagDate date) { _date = date; }
+	void setAge(int age);
 	void setYear(int year) { _date.year = year; }
 	void setMonth(int mon) { _date.mon = mon; }
 	void setDayOfWeek(int dayOfWeek) { _date.dayOfWeek = dayOfWeek; }

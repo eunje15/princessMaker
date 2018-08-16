@@ -73,6 +73,7 @@ HRESULT partTimeScene::init(workStatus* work, int dayCount, int idx)
 
 void partTimeScene::update()
 {
+	if (_fin) return;
 	if (_dialogType == DIALOG_ING) return;
 	switch (_progress)
 	{
@@ -116,6 +117,8 @@ void partTimeScene::update()
 
 void partTimeScene::render()
 {
+	if (_fin) return;
+
 	switch (_progress)
 	{
 	case STATUS_START:
@@ -779,8 +782,8 @@ void partTimeScene::changeFrame()
 					int result = 0;
 					if (temp + randNum > 0)
 						result = temp + randNum;
-					_workStatus[i].second += result;
-					_vPStatus[i].second.data += result;
+					_workStatus[i].second = result;
+					_vPStatus[i].second.data = result;
 				}
 				/*}
 				if(_dayOfWeek != SUN)
@@ -1095,8 +1098,8 @@ void partTimeScene::changeFrame()
 			}
 			if (_dayIdx < _dayCount)
 			{
-				//_princess->getStatusP()->stress += _work->getStress();
-				//_vPStatus[_vPStatus.size() - 1].second.data += _work->getStress();
+				_princess->getStatusP()->stress += _work->getStress();
+				_vPStatus[_vPStatus.size() - 1].second.data += _work->getStress();
 				_princess->setDay(_day);
 				_princess->setDayOfWeek(_dayOfWeek);
 			}
@@ -1256,6 +1259,13 @@ int partTimeScene::changeStatus(string name, int value)
 		_princess->getStatusP()->art += value;
 		if (_princess->getStatus().art < 0)
 			_princess->getStatusP()->art = 0;
+	}
+	else if (name == "스트레스")
+	{
+		temp = _princess->getStatus().stress;
+		_princess->getStatusP()->stress += value;
+		if (_princess->getStatus().stress < 0)
+			_princess->getStatusP()->stress = 0;
 	}
 	return temp;
 }

@@ -191,6 +191,7 @@ void prologueDialog::update()
 			break;
 		case SCENE_PRINCESS:
 			SCENEMANAGER->changeScene("공주씬");
+			setData();
 			break;
 	}
 }
@@ -446,4 +447,26 @@ void prologueDialog::dialogRender()
 			TextOut(DC, WINSIZEX / 2 - 55, WINSIZEY / 2, temp.c_str(), strlen(temp.c_str()));
 		}
 	}
+}
+
+void prologueDialog::setData()
+{
+	_princess->getInfoP()->age = 10;
+	_princess->getInfoP()->gold = 500;
+	_princess->getInfoP()->dietType = "무리하지 않는다";
+
+	_princess->getDateP()->day = _princess->getInfo().day;
+	_princess->getDateP()->dayOfWeek = _princess->getInfo().dayOfWeek;
+	_princess->getDateP()->faceType = PRINCESS_NORMAL;
+	_princess->getDateP()->firstName = _princess->getInfo().firstName;
+	_princess->getDateP()->mon = _princess->getInfo().mon;
+	_princess->getDateP()->name = _princess->getInfo().name;
+	_princess->getDateP()->year = _princess->getInfo().year;
+
+	_princess->getBodyInfoP()->height = RND->getFromFloatTo(145.0f, 152.0f);
+	_princess->getBodyInfoP()->weight = RND->getFromFloatTo(_princess->getBodyInfo().height - 110, _princess->getBodyInfo().height - 105);
+	_princess->getBodyInfoP()->bast = RND->getFromFloatTo(74.0f, 76.0f);
+	_princess->getBodyInfoP()->waist = RND->getFromFloatTo(54.0f, 56.0f);
+	_princess->getBodyInfoP()->hip = RND->getFromFloatTo(75.0f, 78.0f);
+	_princess->getBodyInfoP()->clothesType = 0;
 }

@@ -63,6 +63,17 @@ void inventoryScene::update()
 		if (PtInRect(&_vInvenImg[i].data.rc, _ptMouse))
 		{
 			_vInvenImg[i].frameX = 1;
+			if (_vInven[i]->getType() == ITEM_GOODS)
+			{
+				if (!_vInven[i]->getIsWear())
+				{
+					for (int j = 0; j < _vInven[i]->getProperty().size(); j++)
+					{
+						changeStatus(_vInven[i]->getProperty()[j].first, _vInven[i]->getProperty()[j].second);
+					}
+					_vInven[i]->setIsWear(true);
+				}
+			}
 			if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 			{
 				if (_vInven[i]->getType() == ITEM_CLOTHES)
@@ -72,7 +83,7 @@ void inventoryScene::update()
 						if (_vInven[i]->getProperty()[j].first != "나이" && _vInven[i]->getProperty()[j].first != "비만") continue;
 						if (_vInven[i]->getProperty()[j].first == "비만")
 						{
-							if(_vInven[i]->getProperty()[j].second < 0 && _princess->getDate().type == PRINCESS_OBESITY)
+							if(_vInven[i]->getProperty()[j].second < 0 && (_princess->getBodyInfo().weight)/(_princess->getBodyInfo().height*_princess->getBodyInfo().height) >= 25)
 							_noAge = true;
 							setDialog("주인님, 이 옷을 입기엔 공주님이 조금 통통하십니다.");
 							_cubeFrameX = 4;
@@ -113,11 +124,13 @@ void inventoryScene::update()
 				}
 				for (int j = 0; j < _vInven[i]->getProperty().size(); j++)
 				{
+					if (_vInven[i]->getType() == ITEM_GOODS) continue;
 					changeStatus(_vInven[i]->getProperty()[j].first, _vInven[i]->getProperty()[j].second);
 				}
 			}
 		}
 	}
+
 	if (_noAge && _dialogType == DIALOG_FIN)
 	{
 		if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
@@ -130,7 +143,7 @@ void inventoryScene::update()
 void inventoryScene::render()
 {
 	
-		IMAGEMANAGER->findImage("info3Back")->render(DC, 10, 135);
+		IMAGEMANAGER->findImage("info3Back2")->render(DC, 10, 135);
 		TextOut(DC, 20, 145, "무기", strlen("무기"));
 		if (_weaponOk[1])
 		{
@@ -143,23 +156,23 @@ void inventoryScene::render()
 				if (_selectItem[1]->getProperty()[i].second > 0)
 					str += "+";
 				str += to_string((int)_selectItem[1]->getProperty()[i].second) + " ";
-				TextOut(DC, 90 + strSize, 170, str.c_str(), strlen(str.c_str()));
+				TextOut(DC, 90 + strSize*5, 170, str.c_str(), strlen(str.c_str()));
 				strSize += strlen(str.c_str()) + 5;
 			}
 		}
 		TextOut(DC, 20, 200, "방어구", strlen("방어구"));
 		if (_weaponOk[0])
 		{
-			IMAGEMANAGER->findImage("weapon")->frameRender(DC, 50, 145, _selectItem[0]->getFrameX(), 0);
-			TextOut(DC, 90, 145, _selectItem[0]->getName().c_str(), strlen(_selectItem[0]->getName().c_str()));
+			IMAGEMANAGER->findImage("weapon")->frameRender(DC, 70, 200, _selectItem[0]->getFrameX(), 0);
+			TextOut(DC, 110, 200, _selectItem[0]->getName().c_str(), strlen(_selectItem[0]->getName().c_str()));
 			int strSize = 0;
 			for (int i = 0; i < _selectItem[0]->getProperty().size(); i++)
 			{
 				string str = _selectItem[0]->getProperty()[i].first;
 				if (_selectItem[0]->getProperty()[i].second > 0)
 					str += "+";
-				str += to_string((int)_selectItem[1]->getProperty()[i].second) + " ";
-				TextOut(DC, 90 + strSize, 170, str.c_str(), strlen(str.c_str()));
+				str += to_string((int)_selectItem[0]->getProperty()[i].second) + " ";
+				TextOut(DC, 110 + strSize*5, 225, str.c_str(), strlen(str.c_str()));
 				strSize += strlen(str.c_str()) + 5;
 			}
 		}
@@ -254,7 +267,7 @@ void inventoryScene::setDialog(string dialog)
 	DIALOG->setDialog(_vDialog[0], 5);
 }
 
-void inventoryScene::changeStatus(string name, int value)
+void inventoryScene::changeStatus(string name, float value)
 {
 	if (name == "공격력")
 	{
@@ -303,6 +316,38 @@ void inventoryScene::changeStatus(string name, int value)
 		_princess->getStatusP()->sensitivity += value;
 		if (_princess->getStatus().sensitivity < 0)
 			_princess->getStatusP()->sensitivity = 0;
+	}
+	else if (name == "지능")
+	{
+		_princess->getStatusP()->intelligence += value;
+		if (_princess->getStatus().intelligence < 0)
+			_princess->getStatusP()->intelligence = 0;
+	}
+	else if (name == "전사평가")
+	{
+		_princess->getStatusP()->warrior += value;
+		if (_princess->getStatus().warrior < 0)
+			_princess->getStatusP()->warrior = 0;
+	}
+	else if (name == "체중")
+	{
+		_princess->getBodyInfoP()->weight += value;
+	}
+	else if (name == "키")
+	{
+		_princess->getBodyInfoP()->height += value;
+	}
+	else if (name == "예술")
+	{
+		_princess->getStatusP()->art += value;
+		if (_princess->getStatus().art < 0)
+			_princess->getStatusP()->art = 0;
+	}
+	else if (name == "마력")
+	{
+		_princess->getStatusP()->spell += value;
+		if (_princess->getStatus().spell < 0)
+			_princess->getStatusP()->spell = 0;
 	}
 }
 

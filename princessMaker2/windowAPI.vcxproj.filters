@@ -243,11 +243,11 @@
     <ClInclude Include="eastBattleScene.h">
       <Filter>playGround\battle</Filter>
     </ClInclude>
-    <ClInclude Include="startScene.h">
-      <Filter>playGround\scene</Filter>
-    </ClInclude>
     <ClInclude Include="data.h">
       <Filter>playGround\princess</Filter>
+    </ClInclude>
+    <ClInclude Include="startScene.h">
+      <Filter>playGround\scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -49,5 +49,6 @@ public:
 	void dialogRender();
 
 	void setDadName(string dadName) { _dadName = dadName; }
+	void setData();
 };
 
